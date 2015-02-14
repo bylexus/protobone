@@ -9,26 +9,38 @@ This library is heavily inspired (but not copied) by the famous [Backbone](http:
 
 Usage example:
 --------------
-```javascript
-// Create your own Model class:
-var Person = Class.create(Prototype.Model,{
-    urlRoot: '/entity/Person'
-});
+Fetch with: 
 
-
-// Use an instance of the model:
-var alex = new Person({
-    name: 'Schenkel',
-    firstname: 'Alex'	
-});
-alex.set('age','too old');
-
-// Make it persistent:
-alex.save({onSuccess: function(res,model){
-    console.log(model.getId());	
-}});
+```
+git clone https://github.com/bylexus/prototypejs-model.git
 ```
 
+```
+<!-- require prototype and the Prototype.Model addition: -->
+<script src="https://ajax.googleapis.com/ajax/libs/prototype/1.7.2.0/prototype.js"></script>
+<script src="dist/prototype-model.min.js"></script>
+
+<!-- Usage example -->
+<script>
+	// Create your own Model class:
+	var Person = Class.create(Prototype.Model,{
+	    urlRoot: '/entity/Person'
+	});
+
+
+	// Use an instance of the model:
+	var alex = new Person({
+	    name: 'Schenkel',
+	    firstname: 'Alex'	
+	});
+	alex.set('age','too old');
+
+	// Make it persistent:
+	alex.save({onSuccess: function(res,model){
+	    console.log(model.getId());	
+	}});
+</script>
+```
 
 
 Developing
