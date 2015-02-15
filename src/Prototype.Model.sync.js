@@ -17,17 +17,17 @@
 (function(P) {
 	// Private stuff
 	var httpMethods = {
-		'create': 'POST',
-		'read'  : 'GET',
-		'update': 'PUT',
-		'delete': 'DELETE'
+		'create': 'post',
+		'read'  : 'get',
+		'update': 'put',
+		'delete': 'delete'
 		// TODO: implement PATCH for non-full updates
 	};
 	var legacyMethods = {
-		'create': 'POST',
-		'read': 'GET',
-		'update': 'POST',
-		'delete': 'POST'
+		'create': 'post',
+		'read'  : 'get',
+		'update': 'post',
+		'delete': 'post'
 	};
 
 	var mapMethods = function(method, emulateHTTP) {
