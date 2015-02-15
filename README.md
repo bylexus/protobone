@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.org/bylexus/prototypejs-model.svg?branch=master)](https://travis-ci.org/bylexus/prototypejs-model)
+
 Prototype.Model
 ================
 
@@ -9,7 +11,7 @@ This library is heavily inspired (but not copied) by the famous [Backbone](http:
 
 Usage example:
 --------------
-Fetch with: 
+Fetch with:
 
 ```
 git clone https://github.com/bylexus/prototypejs-model.git
@@ -31,13 +33,13 @@ git clone https://github.com/bylexus/prototypejs-model.git
 	// Use an instance of the model:
 	var alex = new Person({
 	    name: 'Schenkel',
-	    firstname: 'Alex'	
+	    firstname: 'Alex'
 	});
 	alex.set('age','too old');
 
 	// Make it persistent:
 	alex.save({onSuccess: function(res,model){
-	    console.log(model.getId());	
+	    console.log(model.getId());
 	}});
 </script>
 ```
