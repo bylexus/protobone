@@ -70,8 +70,7 @@
 						contentType: 'application/json',
 						postBody: Object.toJSON(model.get()),
 						requestHeaders: {}
-					},
-					handler;
+					};
 				if (this.emulateHTTP) {
 					ajaxOptions.requestHeaders['X-HTTP-Method-Override'] = httpMethods[method];
 				}

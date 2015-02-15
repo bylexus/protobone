@@ -188,6 +188,23 @@
 			},
 
 			/**
+			 * invokes a delete request to the server.  Only
+			 * allowed for existing (id <> null) models. options is passed
+			 * along to Prototype's Ajax.Request function.
+			 *
+			 * After the deletion was successful, the model instance is updated with the
+			 * server data, even if the server removed the instance.
+			 */
+			destroy: function(options) {
+				if (!this.getId()) throw new Error('Cannot be called for new Models');
+				
+				var url = this.url(),
+					method = 'delete';
+
+				return this._request(url, method, options);
+			},
+
+			/**
 			 * internal helper function for initiating the requests for save, fetch, destroy
 			 */
 			_request: function (url,method,options) {
@@ -206,14 +223,6 @@
 				});
 
 				return this.sync(url, method, this, syncOptions);
-			},
-
-			/**
-			 * TODO: implement destroy
-			 */
-			destroy: function() {
-				// TODO
-				throw "Not yet implemeted";
 			},
 
 			/**
