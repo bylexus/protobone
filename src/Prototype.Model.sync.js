@@ -18,7 +18,7 @@
 	// Private stuff
 	var httpMethods = {
 		'create': 'POST',
-		'read': 'GET',
+		'read'  : 'GET',
 		'update': 'PUT',
 		'delete': 'DELETE'
 		// TODO: implement PATCH for non-full updates
@@ -41,8 +41,13 @@
 			 * If set to true, only use GET (read) and POST (create,update,delete) HTTP
 			 * Methods, and set the X-HTTP-Method-Override request header with the 
 			 * true method.
+			 *
+			 * NOTE: TODO: At the moment, only legacy methods (GET/POST) are supported (emulateHTTP: true),
+			 * because the Prototype JS library does NOT support other requests than POST/GET.
+			 * So set emulateHTTP to false does not change a thing, unfortunately...
+			 *
 			 */
-			emulateHTTP: false,
+			emulateHTTP: true,
 
 			/** TODO: Implement emulateJSON to use a post body instead of RAW json*/
 			emulateJSON: false,

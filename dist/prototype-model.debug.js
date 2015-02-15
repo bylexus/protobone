@@ -134,7 +134,7 @@
 			 */
             url: function() {
                 var url = this.urlRoot;
-                if (!url) throw "urlRoot not set. Please define an urlRoot in your model.";
+                if (!url) throw new Error("urlRoot not set. Please define an urlRoot in your model.");
                 if (!!this.getId()) {
                     url += "/" + String(this.getId());
                 }
@@ -154,34 +154,49 @@
 			 * </code>
 			 */
             save: function(options) {
-                var url = this.url(), method = !!this.getId() ? "update" : "create", syncOptions = {}, origOnSuccess;
-                var onSuccess = function(response) {
-                    this.parse(response);
-                    if (origOnSuccess instanceof Function) {
-                        origOnSuccess(response, this);
-                    }
-                }.bind(this);
+                var url = this.url(), method = !!this.getId() ? "update" : "create";
+                return this._request(url, method, options);
+            },
+            /**
+			 * Fetches this Model's representation from the server. Only
+			 * allowed for existing (id <> null) models. options is passed
+			 * along to Prototype's Ajax.Request function.
+			 */
+            fetch: function(options) {
+                if (!this.getId()) throw new Error("Cannot be called for new Models");
+                var url = this.url(), method = "read";
+                return this._request(url, method, options);
+            },
+            /**
+			 * invokes a delete request to the server.  Only
+			 * allowed for existing (id <> null) models. options is passed
+			 * along to Prototype's Ajax.Request function.
+			 *
+			 * After the deletion was successful, the model instance is updated with the
+			 * server data, even if the server removed the instance.
+			 */
+            destroy: function(options) {
+                if (!this.getId()) throw new Error("Cannot be called for new Models");
+                var url = this.url(), method = "delete";
+                return this._request(url, method, options);
+            },
+            /**
+			 * internal helper function for initiating the requests for save, fetch, destroy
+			 */
+            _request: function(url, method, options) {
+                var syncOptions = {};
                 options = options || {};
-                origOnSuccess = options.onSuccess;
-                Object.extend(syncOptions, options);
                 Object.extend(syncOptions, {
-                    onSuccess: onSuccess
+                    onSuccess: function(callback) {
+                        return function(response) {
+                            this.parse(response);
+                            if (callback instanceof Function) {
+                                callback(response, this);
+                            }
+                        }.bind(this);
+                    }.bind(this)(options.onSuccess)
                 });
                 return this.sync(url, method, this, syncOptions);
-            },
-            /**
-			 * TODO: implement fetch (re-load from server)
-			 */
-            fetch: function() {
-                // TODO
-                throw "Not yet implemeted";
-            },
-            /**
-			 * TODO: implement destroy
-			 */
-            destroy: function() {
-                // TODO
-                throw "Not yet implemeted";
             },
             /**
 			 * Just calls Prototype.Model.sync. If you want your own, Model-specific implementation,
@@ -253,8 +268,13 @@
 			 * If set to true, only use GET (read) and POST (create,update,delete) HTTP
 			 * Methods, and set the X-HTTP-Method-Override request header with the 
 			 * true method.
+			 *
+			 * NOTE: TODO: At the moment, only legacy methods (GET/POST) are supported (emulateHTTP: true),
+			 * because the Prototype JS library does NOT support other requests than POST/GET.
+			 * So set emulateHTTP to false does not change a thing, unfortunately...
+			 *
 			 */
-            emulateHTTP: false,
+            emulateHTTP: true,
             /** TODO: Implement emulateJSON to use a post body instead of RAW json*/
             emulateJSON: false,
             /**
@@ -279,7 +299,7 @@
                     contentType: "application/json",
                     postBody: Object.toJSON(model.get()),
                     requestHeaders: {}
-                }, handler;
+                };
                 if (this.emulateHTTP) {
                     ajaxOptions.requestHeaders["X-HTTP-Method-Override"] = httpMethods[method];
                 }
