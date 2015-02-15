@@ -15,7 +15,7 @@ Fetch with:
 git clone https://github.com/bylexus/prototypejs-model.git
 ```
 
-```
+```html
 <!-- require prototype and the Prototype.Model addition: -->
 <script src="https://ajax.googleapis.com/ajax/libs/prototype/1.7.2.0/prototype.js"></script>
 <script src="dist/prototype-model.min.js"></script>
@@ -41,6 +41,37 @@ git clone https://github.com/bylexus/prototypejs-model.git
 	}});
 </script>
 ```
+
+API
+-----
+
+### Prototype.Model
+
+#### Sublcassing Model
+
+#### construct
+
+#### set()
+
+#### get()
+
+#### url(), urlRoot
+
+#### save()
+
+#### fetch()
+
+#### destroy()
+
+#### sync()
+
+#### parse()
+
+#### hasAttribute()
+
+
+
+### Prototype.Collection
 
 
 Developing
@@ -71,6 +102,8 @@ There is still a lot to do. This addition is not yet finished. This is what stil
 * implement Collections with support to batch load/sync Models
 * implement emulate JSON in Model.Prototype.sync
 * implement an event system (e.g. on model updates etc.)
+* implement defaults on Model
+* implement validation (on save (triggers invalid event), on set (optional))
 
 
 License

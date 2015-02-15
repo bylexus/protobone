@@ -145,7 +145,7 @@
 			 */
 			url: function() {
 				var url = this.urlRoot;
-				if (!url) throw "urlRoot not set. Please define an urlRoot in your model.";
+				if (!url) throw new Error("urlRoot not set. Please define an urlRoot in your model.");
 
 				if (!!this.getId()) {
 					url += '/' + String(this.getId());
@@ -168,33 +168,44 @@
 			 */
 			save: function(options) {
 				var url = this.url(),
-					method = !!this.getId()?'update':'create',
-					syncOptions = {},
-					origOnSuccess;
+					method = !!this.getId()?'update':'create';
 
-				var onSuccess = function(response) {
-					this.parse(response);
-					if (origOnSuccess instanceof Function) {
-						origOnSuccess(response,this);
-					}
-				}.bind(this);
-
-				options = options || {};
-				origOnSuccess = options.onSuccess;
-				Object.extend(syncOptions,options);
-				Object.extend(syncOptions, {
-					onSuccess: onSuccess
-				});
-
-				return this.sync(url, method, this, syncOptions);
+				return this._request(url, method, options);
 			},
 
 			/**
-			 * TODO: implement fetch (re-load from server)
+			 * Fetches this Model's representation from the server. Only
+			 * allowed for existing (id <> null) models. options is passed
+			 * along to Prototype's Ajax.Request function.
 			 */
-			fetch: function() {
-				// TODO
-				throw "Not yet implemeted";
+			fetch: function(options) {
+				if (!this.getId()) throw new Error('Cannot be called for new Models');
+
+				var url = this.url(),
+					method = 'read';
+
+				return this._request(url, method, options);
+			},
+
+			/**
+			 * internal helper function for initiating the requests for save, fetch, destroy
+			 */
+			_request: function (url,method,options) {
+				var syncOptions = {};
+
+				options = options || {};
+				Object.extend(syncOptions, {
+					onSuccess: (function(callback) {
+						return function(response) {
+							this.parse(response);
+							if (callback instanceof Function) {
+								callback(response,this);
+							}
+						}.bind(this);
+					}.bind(this)(options.onSuccess))
+				});
+
+				return this.sync(url, method, this, syncOptions);
 			},
 
 			/**
