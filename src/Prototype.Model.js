@@ -95,7 +95,7 @@
                         ret = this.set(item.key, item.value);
                     }, this);
                 } else {
-                    ret = this.setAttribute(keyOrObject, value,newValues,oldValues);
+                    ret = this._setAttribute(keyOrObject, value,newValues,oldValues);
                     this.fireEvent('updated',this,newValues,oldValues);
                 }
                 return ret;
@@ -109,11 +109,11 @@
              * @param mixed value The value to set
              * @return this Supports fluent interface by returning itself
              */
-            setAttribute: function(key, value,newVals, oldVals) {
+            _setAttribute: function(key, value,newVals, oldVals) {
                 if (typeof key === 'string') {
                     if (this._attributes[key] !== value) {
-                        oldVals[key] = this._dirtyAttributes[key];
-                        newVals[key] = value;
+                        if (oldVals) oldVals[key] = this._dirtyAttributes[key];
+                        if (newVals) newVals[key] = value;
                         this._dirtyAttributes[key] = value;
                     }
 
