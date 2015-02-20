@@ -29,12 +29,17 @@ git clone https://github.com/bylexus/prototypejs-model.git
 	    urlRoot: '/entity/Person'
 	});
 
-
 	// Use an instance of the model:
 	var alex = new Person({
 	    name: 'Schenkel',
 	    firstname: 'Alex'
 	});
+
+    // add an update listener:
+    alex.on('updated', function(rec,newVals, oldVals) {
+        console.log("new values of "+rec.get('name'),newVals);
+    });
+
 	alex.set('age','too old');
 
 	// Make it persistent:
@@ -71,7 +76,11 @@ API
 
 #### hasAttribute()
 
+#### on()
 
+#### off()
+
+#### fireEvent();
 
 ### Prototype.Collection
 
@@ -100,7 +109,6 @@ TODO
 -----
 There is still a lot to do. This addition is not yet finished. This is what still need to be done:
 
-* implement Model.fetch(), Model.destroy() methods
 * implement Collections with support to batch load/sync Models
 * implement emulate JSON in Model.Prototype.sync
 * implement an event system (e.g. on model updates etc.)
