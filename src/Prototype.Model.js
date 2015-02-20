@@ -46,6 +46,7 @@
             initialize: function(data) {
                 data = data || {};
                 this._attributes = {};
+                this._listeners = {};
 
                 /** TODO: Implement dirty attribute detection */
                 this._dirtyAttributes = {};
@@ -86,13 +87,16 @@
              * @return this Supports fluent interface by returning itself
              */
             set: function(keyOrObject, value) {
-                var ret;
+                var ret,
+                    oldValues = {},
+                    newValues = {};
                 if (keyOrObject instanceof Object) {
                     $H(keyOrObject).each(function(item) {
                         ret = this.set(item.key, item.value);
                     }, this);
                 } else {
-                    ret = this.setAttribute(keyOrObject, value);
+                    ret = this.setAttribute(keyOrObject, value,newValues,oldValues);
+                    this.fireEvent('updated',this,newValues,oldValues);
                 }
                 return ret;
             },
@@ -105,10 +109,15 @@
              * @param mixed value The value to set
              * @return this Supports fluent interface by returning itself
              */
-            setAttribute: function(key, value) {
+            setAttribute: function(key, value,newVals, oldVals) {
                 if (typeof key === 'string') {
+                    if (this._attributes[key] !== value) {
+                        oldVals[key] = this._dirtyAttributes[key];
+                        newVals[key] = value;
+                        this._dirtyAttributes[key] = value;
+                    }
+
                     this._attributes[key] = value;
-                    this._dirtyAttributes[key] = value;
                     if (key === this.idAttribute) {
                         this.setId(value);
                     }
@@ -251,6 +260,42 @@
              */
             hasAttribute: function(key) {
                 return Object.keys(this._attributes).indexOf(key) >= 0;
+            },
+
+            on: function(eventName, callback) {
+                if (!this._listeners[eventName]) {
+                    this._listeners[eventName] = [];
+                }
+                this._listeners[eventName].push(callback);
+                return this;
+            },
+
+            off: function(eventName, callback) {
+                var handlerArr,index;
+
+                if (!callback) {
+                    // remove all handlers for an event:
+                    console.log('removing event handerl for '+eventName);
+                    delete this._listeners[eventName];
+                } else {
+                    // only remove specific hander:
+                    handlerArr = this._listeners[eventName];
+                    if (handlerArr && handlerArr.indexOf(callback) > -1) {
+                        handlerArr.splice(handlerArr.indexOf(callback),1);
+                    }
+                }
+                return this;
+            },
+
+            fireEvent: function(eventName) {
+                var args = $A(arguments).splice(1),
+                    allTrue = true;
+                $A(this._listeners[eventName]).each(function(listener) {
+                    if (listener instanceof Function) {
+                        allTrue = allTrue && listener.apply(null,args) !== false;
+                    }
+                }.bind(this));
+                return allTrue;
             }
         });
     }
