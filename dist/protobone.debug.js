@@ -1554,6 +1554,9 @@ module.exports = _.extend(statics, {
  * @class Protobone.Model
  * @constructor
  */
+var _ = require('underscore');
+var statics = require('../statics');
+
 var Model = Class.create({
     idAttribute: 'id',
 
@@ -1621,18 +1624,17 @@ var Model = Class.create({
      * @return {this} Supports fluent interface by returning itself
      */
     set: function(keyOrObject, value) {
-        var ret,
-            oldValues = {},
+        var oldValues = {},
             newValues = {};
-        if (keyOrObject instanceof Object) {
-            $H(keyOrObject).each(function(item) {
-                ret = this.set(item.key, item.value);
+        if (_.isObject(keyOrObject)) {
+            _.each(_.keys(keyOrObject),function(key) {
+                this.set(key, keyOrObject[key]);
             }, this);
         } else {
-            ret = this._setAttribute(keyOrObject, value,newValues,oldValues);
+            this._setAttribute(keyOrObject, value,newValues,oldValues);
             this.fireEvent('updated',this,newValues,oldValues);
         }
-        return ret;
+        return this;
     },
 
     /**
@@ -1669,7 +1671,7 @@ var Model = Class.create({
      */
     get: function(key) {
         if (!key) {
-            return Object.clone(this._attributes);
+            return _.clone(this._attributes);
         }
         if (this.hasAttribute(key)) {
             return this._attributes[key];
@@ -1766,15 +1768,15 @@ var Model = Class.create({
         var syncOptions = {};
 
         options = options || {};
-        Object.extend(syncOptions, {
-            onSuccess: (function(callback) {
-                return function(response) {
+        _.extend(syncOptions, {
+            onSuccess: (_.bind(function(callback) {
+                return _.bind(function(response) {
                     this.parse(response);
-                    if (callback instanceof Function) {
+                    if (_.isFunction(callback)) {
                         callback(response,this);
                     }
-                }.bind(this);
-            }.bind(this)(options.onSuccess))
+                },this);
+            },this)(options.onSuccess))
         });
 
         return this.sync(url, method, this, syncOptions);
@@ -1788,7 +1790,7 @@ var Model = Class.create({
      * @method sync
      */
     sync: function() {
-        return Protobone.sync.apply(Protobone,arguments);
+        return statics.sync.apply(statics,arguments);
     },
 
     /**
@@ -1811,7 +1813,7 @@ var Model = Class.create({
      * @return {Boolean}
      */
     hasAttribute: function(key) {
-        return Object.keys(this._attributes).indexOf(key) >= 0;
+        return _.indexOf(_.keys(this._attributes),key) >= 0;
     },
 
     /**
@@ -1849,10 +1851,10 @@ var Model = Class.create({
             // remove all handlers for an event:
             this._listeners[eventName] = [];
         } else {
-            // only remove specific hander:
+            // only remove specific handler:
             handlerArr = this._listeners[eventName];
-            while (handlerArr && handlerArr.indexOf(callback) > -1) {
-                handlerArr.splice(handlerArr.indexOf(callback),1);
+            while (handlerArr && _.indexOf(handlerArr,callback) > -1) {
+                handlerArr.splice(_.indexOf(handlerArr,callback),1);
             }
         }
         return this;
@@ -1872,13 +1874,13 @@ var Model = Class.create({
      * @return {Boolean} true when non of the listeners returned false, false if they do so.
      */
     fireEvent: function(eventName) {
-        var args = $A(arguments).splice(1),
+        var args = _.toArray(arguments).splice(1),
             allTrue = true;
-        $A(this._listeners[eventName]).each(function(listener) {
-            if (listener instanceof Function) {
+        _.each(_.toArray(this._listeners[eventName]),_.bind(function(listener) {
+            if (_.isFunction(listener)) {
                 allTrue = allTrue && listener.apply(null,args) !== false;
             }
-        }.bind(this));
+        },this));
         return allTrue;
     }
 });
@@ -1886,7 +1888,7 @@ var Model = Class.create({
 // Adding support for JS Modules through browserify / ES 6:
 module.exports = Model;
 
-},{}],4:[function(require,module,exports){
+},{"../statics":4,"underscore":1}],4:[function(require,module,exports){
 /**
  * PrototypeJS Model extension - Enables Prototype JS users to fetch / store
  * Models from / to a backend using AJAX / REST
@@ -1904,6 +1906,8 @@ module.exports = Model;
  * @license Released under the MIT License
  * @class Protobone.Model
  */
+
+var _ = require('underscore');
 
 // Private stuff
 var httpMethods = {
@@ -1980,11 +1984,11 @@ module.exports = {
             ajaxOptions.requestHeaders['X-HTTP-Method-Override'] = httpMethods[method];
         }
         options = options || {};
-        Object.extend(ajaxOptions, options);
+        _.extend(ajaxOptions, options);
 
         return new Ajax.Request(url, ajaxOptions);
     }
 };
 
-},{}]},{},[2])(2)
+},{"underscore":1}]},{},[2])(2)
 });

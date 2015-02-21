@@ -16,6 +16,8 @@
  * @class Protobone.Model
  */
 
+var _ = require('underscore');
+
 // Private stuff
 var httpMethods = {
 	'create': 'post',
@@ -91,7 +93,7 @@ module.exports = {
             ajaxOptions.requestHeaders['X-HTTP-Method-Override'] = httpMethods[method];
         }
         options = options || {};
-        Object.extend(ajaxOptions, options);
+        _.extend(ajaxOptions, options);
 
         return new Ajax.Request(url, ajaxOptions);
     }
