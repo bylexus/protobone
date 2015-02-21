@@ -1,9 +1,9 @@
 {
     "project": {
-        "name": "Prototype.Model",
-        "description": "PrototypeJS addition to provide syncable Models (the 'M' in 'MVC')",
+        "name": "protobone",
+        "description": "Backbone-inspired PrototypeJS addition to provide syncable Models (the 'M' in 'MVC')",
         "version": "0.0.2",
-        "url": "https://github.com/bylexus/prototypejs-model.git"
+        "url": "https://github.com/bylexus/protobone.git"
     },
     "files": {
         "src/model/Model.js": {
@@ -13,11 +13,11 @@
             "fors": {},
             "namespaces": {}
         },
-        "src/model/sync.js": {
-            "name": "src/model/sync.js",
+        "src/statics.js": {
+            "name": "src/statics.js",
             "modules": {},
             "classes": {
-                "Prototype.Model": 1
+                "Protobone.Model": 1
             },
             "fors": {},
             "namespaces": {}
@@ -25,15 +25,15 @@
     },
     "modules": {},
     "classes": {
-        "Prototype.Model": {
-            "name": "Prototype.Model",
-            "shortname": "Prototype.Model",
+        "Protobone.Model": {
+            "name": "Protobone.Model",
+            "shortname": "Protobone.Model",
             "classitems": [],
             "plugins": [],
             "extensions": [],
             "plugin_for": [],
             "extension_for": [],
-            "file": "src/model/sync.js",
+            "file": "src/statics.js",
             "line": 1,
             "description": "PrototypeJS Model extension - Enables Prototype JS users to fetch / store\nModels from / to a backend using AJAX / REST\n\nInspired by (but not copied) Backbone's Backbone.Model and Backbone.sync",
             "author": "Alexander Schenkel <alex@alexi.ch>",
@@ -45,7 +45,7 @@
                 "which does the server\ncommunication. If you want to implement your own method",
                 "e.g. if you have another\nbackend interface",
                 "or even want to use local storage",
-                "override Prototype.Model.sync with your own implementation."
+                "override Protobone.Model.sync with your own implementation."
             ]
         }
     },
@@ -57,7 +57,7 @@
             "itemtype": "property",
             "name": "urlRoot",
             "type": "String",
-            "class": "Prototype.Model"
+            "class": "Protobone.Model"
         },
         {
             "file": "src/model/Model.js",
@@ -72,12 +72,12 @@
                     "type": "Object"
                 }
             ],
-            "class": "Prototype.Model"
+            "class": "Protobone.Model"
         },
         {
             "file": "src/model/Model.js",
             "line": 56,
-            "class": "Prototype.Model"
+            "class": "Protobone.Model"
         },
         {
             "file": "src/model/Model.js",
@@ -89,7 +89,7 @@
                 "description": "The ID (int, string), if any",
                 "type": "Mixed"
             },
-            "class": "Prototype.Model"
+            "class": "Protobone.Model"
         },
         {
             "file": "src/model/Model.js",
@@ -108,7 +108,7 @@
                 "description": "Supports fluent interface by returning itself",
                 "type": "This"
             },
-            "class": "Prototype.Model"
+            "class": "Protobone.Model"
         },
         {
             "file": "src/model/Model.js",
@@ -132,7 +132,7 @@
                 "description": "Supports fluent interface by returning itself",
                 "type": "This"
             },
-            "class": "Prototype.Model"
+            "class": "Protobone.Model"
         },
         {
             "file": "src/model/Model.js",
@@ -154,7 +154,7 @@
                 "description": "Supports fluent interface by returning itself",
                 "type": "This"
             },
-            "class": "Prototype.Model"
+            "class": "Protobone.Model"
         },
         {
             "file": "src/model/Model.js",
@@ -173,7 +173,7 @@
                 "description": "The value of the requested attribute, or an object with all attributes",
                 "type": "Mixed"
             },
-            "class": "Prototype.Model"
+            "class": "Protobone.Model"
         },
         {
             "file": "src/model/Model.js",
@@ -185,7 +185,7 @@
                 "description": "The URL for this Model instance, e.g. `/root/Entity/3`",
                 "type": "String"
             },
-            "class": "Prototype.Model"
+            "class": "Protobone.Model"
         },
         {
             "file": "src/model/Model.js",
@@ -200,7 +200,7 @@
                     "type": "Object"
                 }
             ],
-            "class": "Prototype.Model"
+            "class": "Protobone.Model"
         },
         {
             "file": "src/model/Model.js",
@@ -215,7 +215,7 @@
                     "type": "Object"
                 }
             ],
-            "class": "Prototype.Model"
+            "class": "Protobone.Model"
         },
         {
             "file": "src/model/Model.js",
@@ -230,30 +230,30 @@
                     "type": "Object"
                 }
             ],
-            "class": "Prototype.Model"
+            "class": "Protobone.Model"
         },
         {
             "file": "src/model/Model.js",
             "line": 236,
             "description": "internal helper function for initiating the requests for save, fetch, destroy",
-            "class": "Prototype.Model"
+            "class": "Protobone.Model"
         },
         {
             "file": "src/model/Model.js",
             "line": 257,
-            "description": "Just calls Prototype.Model.sync. If you want your own, Model-specific implementation,\noverride this function.",
+            "description": "Just calls Protobone.Model.sync. If you want your own, Model-specific implementation,\noverride this function.",
             "see": [
-                "Prototype.model.sync. Also here: inspired by http://backbonejs.org/#Sync"
+                "Protobone.Model.sync. Also here: inspired by http://backbonejs.org/#Sync"
             ],
             "itemtype": "method",
             "name": "sync",
-            "class": "Prototype.Model"
+            "class": "Protobone.Model"
         },
         {
             "file": "src/model/Model.js",
             "line": 268,
             "description": "Called by save() and fetch() with the server's data response. Fills in the\nserver response to the model. In the default implementation, it just\ntakes the plain JSON object from the server (if any) and store the values on the model.",
-            "class": "Prototype.Model"
+            "class": "Protobone.Model"
         },
         {
             "file": "src/model/Model.js",
@@ -272,7 +272,7 @@
                 "description": "",
                 "type": "Boolean"
             },
-            "class": "Prototype.Model"
+            "class": "Protobone.Model"
         },
         {
             "file": "src/model/Model.js",
@@ -297,7 +297,7 @@
                     "type": "Boolean"
                 }
             ],
-            "class": "Prototype.Model"
+            "class": "Protobone.Model"
         },
         {
             "file": "src/model/Model.js",
@@ -322,7 +322,7 @@
                     "type": "Boolean"
                 }
             ],
-            "class": "Prototype.Model"
+            "class": "Protobone.Model"
         },
         {
             "file": "src/model/Model.js",
@@ -341,30 +341,30 @@
                 "description": "true when non of the listeners returned false, false if they do so.",
                 "type": "Boolean"
             },
-            "class": "Prototype.Model"
+            "class": "Protobone.Model"
         },
         {
-            "file": "src/model/sync.js",
+            "file": "src/statics.js",
             "line": 39,
             "description": "If set to true, only use GET (read) and POST (create,update,delete) HTTP\nMethods, and set the X-HTTP-Method-Override request header with the\ntrue method.\n\nNOTE: TODO: At the moment, only legacy methods (GET/POST) are supported (emulateHTTP: true),\nbecause the Prototype JS library does NOT support other requests than POST/GET.\nSo set emulateHTTP to false does not change a thing, unfortunately...",
             "itemtype": "property",
             "name": "emulateHTTP",
             "type": "{Boolean}",
-            "class": "Prototype.Model"
+            "class": "Protobone.Model"
         },
         {
-            "file": "src/model/sync.js",
+            "file": "src/statics.js",
             "line": 53,
             "description": "TODO: Implement emulateJSON to use a post body instead of RAW json",
             "itemtype": "property",
             "name": "emulateJSON",
             "type": "{Boolean}",
-            "class": "Prototype.Model"
+            "class": "Protobone.Model"
         },
         {
-            "file": "src/model/sync.js",
+            "file": "src/statics.js",
             "line": 61,
-            "description": "This method is where the real server communication happens. It uses\nPrototype's Ajax.Request to send / load data to/from a REST backend.\nIt is called in a static context (`Prototype.Model.sync`) from a Model's instance\nand can be overridden if you have to implement your own storage backend (e.g. localstore)\nor an incompatible API.\n\nThe default method uses the following HTTP methods\n\n* method: create -> `POST /collection`\n* method: read   -> `GET  /collection[/id]`\n* method: update -> `POST /collection/id` (Request Header: `X-HTTP-Method-Override: put`)\n* method: delete -> `POST /collection/id` (Request Header: `X-HTTP-Method-Override: delete`)",
+            "description": "This method is where the real server communication happens. It uses\nPrototype's Ajax.Request to send / load data to/from a REST backend.\nIt is called in a static context (`Protobone.Model.sync`) from a Model's instance\nand can be overridden if you have to implement your own storage backend (e.g. localstore)\nor an incompatible API.\n\nThe default method uses the following HTTP methods\n\n* method: create -> `POST /collection`\n* method: read   -> `GET  /collection[/id]`\n* method: update -> `POST /collection/id` (Request Header: `X-HTTP-Method-Override: put`)\n* method: delete -> `POST /collection/id` (Request Header: `X-HTTP-Method-Override: delete`)",
             "itemtype": "method",
             "name": "sync",
             "params": [
@@ -381,7 +381,7 @@
                 {
                     "name": "model",
                     "description": "A model instance to be sent / updated to /from the server",
-                    "type": "Prototype.Model"
+                    "type": "Protobone.Model"
                 },
                 {
                     "name": "options",
@@ -390,7 +390,7 @@
                 }
             ],
             "static": 1,
-            "class": "Prototype.Model"
+            "class": "Protobone.Model"
         }
     ],
     "warnings": [
@@ -404,11 +404,11 @@
         },
         {
             "message": "unknown tag: copyright",
-            "line": " src/model/sync.js:1"
+            "line": " src/statics.js:1"
         },
         {
             "message": "unknown tag: license",
-            "line": " src/model/sync.js:1"
+            "line": " src/statics.js:1"
         },
         {
             "message": "Missing item type",
