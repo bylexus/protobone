@@ -52,38 +52,9 @@ git clone https://github.com/bylexus/prototypejs-model.git
 API
 -----
 
-### Prototype.Model
+Please find the [API docs](http://bylexus.github.io/prototypejs-model/) online:
 
-#### Sublcassing Model
-
-#### construct
-
-#### set()
-
-#### get()
-
-#### url(), urlRoot
-
-#### save()
-
-#### fetch()
-
-#### destroy()
-
-#### sync()
-
-#### parse()
-
-#### hasAttribute()
-
-#### on()
-
-#### off()
-
-#### fireEvent();
-
-### Prototype.Collection
-
+* [Prototype.Model](http://bylexus.github.io/prototypejs-model/classes/Prototype.Model.html)
 
 Developing
 -----------
@@ -102,6 +73,11 @@ grunt test
 build debug and minified version:
 ```
 grunt uglify
+```
+
+build docs:
+```
+grung doc
 ```
 
 

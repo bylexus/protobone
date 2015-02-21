@@ -1,0 +1,26 @@
+{
+  "name": "prototypejs-model",
+  "version": "0.0.1",
+  "homepage": "https://github.com/bylexus/prototypejs-model",
+  "authors": [
+    "Alexander Schenkel <alex@alexi.ch>"
+  ],
+  "description": "PrototypeJS addition to provide syncable Models (the 'M' in 'MVC')",
+  "moduleType": [
+    "globals"
+  ],
+  "keywords": [
+    "prototypejs",
+    "model",
+    "mvc",
+    "sync"
+  ],
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ]
+}

@@ -15,7 +15,7 @@
  * @license Released under the MIT License
  * @class Prototype.Model
  */
-(function(P) {
+(function() {
 	// Private stuff
 	var httpMethods = {
 		'create': 'post',
@@ -36,8 +36,8 @@
 	};
 
 	// Extend Prototype.Model class:
-	if (P && P.Model) {
-		Object.extend(P.Model, {
+	if (Prototype && Prototype.Model) {
+		Object.extend(Prototype.Model, {
 			/**
 			 * If set to true, only use GET (read) and POST (create,update,delete) HTTP
 			 * Methods, and set the X-HTTP-Method-Override request header with the
@@ -92,4 +92,4 @@
 			}
 		});
 	}
-}(Prototype));
+}());

@@ -71,5 +71,7 @@ module.exports = function(grunt) {
     grunt.loadNpmTasks('grunt-contrib-yuidoc');
 
     grunt.registerTask('test', 'Run test suite using jasmine', ['jasmine']);
+    grunt.registerTask('build', 'Build a single bundle', ['uglify']);
+    grunt.registerTask('doc', 'Generate API doc', ['yuidoc']);
     grunt.registerTask('default', ['test']);
 };
