@@ -8,7 +8,7 @@
  *
  * ```javascript
  * // Create your own Model class:
- * var Person = Class.create(Prototype.Model,{
+ * var Person = Class.create(Protobone.Model,{
  *     urlRoot: '/entity/Person'
  * });
  *
@@ -25,7 +25,7 @@
  * @author Alexander Schenkel <alex@alexi.ch>
  * @copyright 2015 Alexander Schenkel
  * @license Released under the MIT License
- * @class Prototype.Model
+ * @class Protobone.Model
  * @constructor
  */
 var Model = Class.create({
@@ -39,7 +39,7 @@ var Model = Class.create({
      * @property urlRoot
      * @type String
      */
-    urlRoot: null,
+    urlRoot: '',
 
     /**
      * Constructor. Sets the given data (key/value pairs)
@@ -255,14 +255,14 @@ var Model = Class.create({
     },
 
     /**
-     * Just calls Prototype.Model.sync. If you want your own, Model-specific implementation,
+     * Just calls Protobone.Model.sync. If you want your own, Model-specific implementation,
      * override this function.
      *
-     * @see Prototype.model.sync. Also here: inspired by http://backbonejs.org/#Sync
+     * @see Protobone.Model.sync. Also here: inspired by http://backbonejs.org/#Sync
      * @method sync
      */
     sync: function() {
-        return Prototype.Model.sync.apply(Prototype.Model,arguments);
+        return Protobone.sync.apply(Protobone,arguments);
     },
 
     /**

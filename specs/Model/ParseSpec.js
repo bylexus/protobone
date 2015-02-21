@@ -1,12 +1,12 @@
-describe("Prototype.Model", function() {
+describe("Protobone.Model", function() {
 	describe("#parse", function() {
 		it("exists", function() {
-			expect(Prototype.Model.prototype.parse).toEqual(jasmine.any(Function));
+			expect(Protobone.Model.prototype.parse).toEqual(jasmine.any(Function));
 		});
 
 
 		it("parses the response correctly and sets the data", function(){
-			var m = new Prototype.Model();
+			var m = new Protobone.Model();
 			var response = {
 				responseJSON: {
 					id: 5,

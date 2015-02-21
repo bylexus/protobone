@@ -1,9 +1,9 @@
-[![Build Status](https://travis-ci.org/bylexus/prototypejs-model.svg?branch=master)](https://travis-ci.org/bylexus/prototypejs-model)
+[![Build Status](https://travis-ci.org/bylexus/protobone.svg?branch=master)](https://travis-ci.org/bylexus/protobone)
 
-Prototype.Model
-================
+Protobone
+=========
 
-> PrototypeJS Model extension - Enables Prototype JS users to fetch / store Models from / to a backend using AJAX / REST
+> Backbone-inspired PrototypeJS Model extension - Enables Prototype JS users to fetch / store Models from / to a backend using AJAX / REST
 
 This addition to [the PrototypeJS Library](http://prototypejs.org/) enables users to define Entity Models and store / fetch (make persistent) them to a backend. Also known as [the "M" from MVC](http://en.wikipedia.org/wiki/Model%E2%80%93view%E2%80%93controller).
 
@@ -15,44 +15,44 @@ Install
 
 with [Bower](http://bower.io/):
 
-`bower install https://github.com/bylexus/prototypejs-model.git`
+`bower install https://github.com/bylexus/protobone.git`
 
 manually using GIT:
 
-`git clone https://github.com/bylexus/prototypejs-model.git`
+`git clone https://github.com/bylexus/protobone.git`
 
 Usage example: Standalone
 --------------------------
 
 ```html
-<!-- require prototype and the Prototype.Model addition: -->
+<!-- require prototype and the Protobone addition: -->
 <script src="https://ajax.googleapis.com/ajax/libs/prototype/1.7.2.0/prototype.js"></script>
-<script src="prototypejs-model/dist/prototype-model.min.js"></script>
+<script src="protobone/dist/protobone.min.js"></script>
 
 <!-- Usage example -->
 <script>
-	// Create your own Model class:
-	var Person = Class.create(Prototype.Model,{
-	    urlRoot: '/entity/Person'
-	});
+    // Create your own Model class:
+    var Person = Class.create(Protobone.Model,{
+        urlRoot: '/entity/Person'
+    });
 
-	// Use an instance of the model:
-	var alex = new Person({
-	    name: 'Schenkel',
-	    firstname: 'Alex'
-	});
+    // Use an instance of the model:
+    var alex = new Person({
+        name: 'Schenkel',
+        firstname: 'Alex'
+    });
 
     // add an update listener:
     alex.on('updated', function(rec,newVals, oldVals) {
         console.log("new values of "+rec.get('name'),newVals);
     });
 
-	alex.set('age','too old');
+    alex.set('age','too old');
 
-	// Make it persistent:
-	alex.save({onSuccess: function(res,model){
-	    console.log(model.getId());
-	}});
+    // Make it persistent:
+    alex.save({onSuccess: function(res,model){
+        console.log(model.getId());
+    }});
 </script>
 ```
 
@@ -64,16 +64,16 @@ Usage example: as AMD module using [requirejs](http://requirejs.org/)
 <script src="https://ajax.googleapis.com/ajax/libs/prototype/1.7.2.0/prototype.js"></script>
 <script src="http://requirejs.org/docs/release/2.1.16/minified/require.js"></script>
 <script>
-    // load the Prototype.Model class as AMD module:
+    // load the Protobone class as AMD module:
     require.config({
         paths: {
-            'Prototype.Model': 'prototype-model/dist/prototype-model.min'
+            'Protobone': 'protobone/dist/protobone.min'
         }
     });
 
-    require(['Prototype.Model'], function(Model) {
+    require(['Protobone'], function(Protobone) {
         // Create your own Model class:
-        var Person = Class.create(Model,{
+        var Person = Class.create(Protobone.Model,{
             urlRoot: '/entity/Person'
         });
 
@@ -101,15 +101,15 @@ Usage example: as AMD module using [requirejs](http://requirejs.org/)
 API
 -----
 
-Please find the [API docs](http://bylexus.github.io/prototypejs-model/) online:
+Please find the [API docs](http://bylexus.github.io/protobone/) online:
 
-* [Prototype.Model](http://bylexus.github.io/prototypejs-model/classes/Prototype.Model.html)
+* [Protobone.Model](http://bylexus.github.io/protobone/classes/Protobone.Model.html)
 
 Developing
 -----------
 
 ```
-git clone https://github.com/bylexus/prototypejs-model.git
+git clone https://github.com/bylexus/protobone.git
 npm install
 ```
 
@@ -131,6 +131,7 @@ grung doc
 
 Changelog
 ---------
+* 0.0.3: Changed Name and Namespace from "Prototype.Model" to "Protobone" to make the Library independant from the Prototype namespace and for better UMD integration
 * 0.0.2: Switched build process do browserify to support UMD Modules and prepare for ES6
 * 0.0.1: first running version including Model
 
@@ -140,7 +141,7 @@ TODO
 There is still a lot to do. This addition is not yet finished. This is what still need to be done:
 
 * implement Collections with support to batch load/sync Models
-* implement emulate JSON in Model.Prototype.sync
+* implement emulate JSON in Protobone.sync
 * implement an event system (e.g. on model updates etc.)
 * implement defaults on Model
 * implement validation (on save (triggers invalid event), on set (optional))

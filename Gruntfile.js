@@ -4,7 +4,7 @@ module.exports = function(grunt) {
         jasmine: {
             customTemplate: {
                 src: [
-                    'dist/prototype-model.debug.js'
+                    'dist/protobone.debug.js'
                 ],
                 options: {
                     specs: ['specs/**/*Spec.js'],
@@ -27,7 +27,7 @@ module.exports = function(grunt) {
                     preserveComments: false
                 },
                 files: {
-                    'dist/prototype-model.min.js': ['dist/prototype-model.dist.js']
+                    'dist/protobone.min.js': ['dist/protobone.dist.js']
                 }
             }
         },
@@ -38,7 +38,7 @@ module.exports = function(grunt) {
 
         yuidoc: {
             compile: {
-                name: 'Prototype.Model',
+                name: 'protobone',
                 description: '<%= pkg.description %>',
                 version: '<%= pkg.version %>',
                 url: '<%= pkg.homepage %>',
@@ -54,7 +54,7 @@ module.exports = function(grunt) {
         browserify: {
             options: {
                 browserifyOptions: {
-                    standalone: 'Prototype.Model'
+                    standalone: 'Protobone'
                 }
             },
             watch: {
@@ -64,21 +64,21 @@ module.exports = function(grunt) {
                     keepAlive: true
                 },
                 src: 'src/main.js',
-                dest: 'dist/prototype-model.debug.js'
+                dest: 'dist/protobone.debug.js'
             },
             dev: {
                 options: {
                     debug: true
                 },
                 src: 'src/main.js',
-                dest: 'dist/prototype-model.debug.js'
+                dest: 'dist/protobone.debug.js'
             },
             dist: {
                 options: {
                     debug: false
                 },
                 src: 'src/main.js',
-                dest: 'dist/prototype-model.dist.js'
+                dest: 'dist/protobone.dist.js'
             }
         }
     });

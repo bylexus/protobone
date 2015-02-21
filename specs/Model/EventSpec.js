@@ -1,17 +1,17 @@
-describe("Prototype.Model", function() {
+describe("Protobone.Model", function() {
     describe("#on", function() {
         it("exists", function() {
-            expect(Prototype.Model.prototype.on).toEqual(jasmine.any(Function));
+            expect(Protobone.Model.prototype.on).toEqual(jasmine.any(Function));
         });
 
         it("returns itself (this, fluent interface)", function() {
-            var m = new Prototype.Model();
+            var m = new Protobone.Model();
             var ret = m.on('test',function(){});
             expect(ret).toEqual(m);
         });
 
         it("adds the callback to the internal listener array", function() {
-            var m = new Prototype.Model();
+            var m = new Protobone.Model();
             var f = function(){};
             var f2 = function(){};
             m.on('test',f);
@@ -27,17 +27,17 @@ describe("Prototype.Model", function() {
 
     describe("#off", function() {
         it("exists", function() {
-            expect(Prototype.Model.prototype.off).toEqual(jasmine.any(Function));
+            expect(Protobone.Model.prototype.off).toEqual(jasmine.any(Function));
         });
 
         it("returns itself (this, fluent interface)", function() {
-            var m = new Prototype.Model();
+            var m = new Protobone.Model();
             var ret = m.off('test');
             expect(ret).toEqual(m);
         });
 
         it("removes a specific event listener (also when registered multiple times)", function() {
-            var m = new Prototype.Model();
+            var m = new Protobone.Model();
             var f = function(){};
             var f2 = function(){};
             m.on('test',f);
@@ -51,7 +51,7 @@ describe("Prototype.Model", function() {
         });
 
         it("removes all event listeners for a given event", function() {
-            var m = new Prototype.Model();
+            var m = new Protobone.Model();
             var f = function(){};
             var f2 = function(){};
             m.on('test',f);
@@ -67,11 +67,11 @@ describe("Prototype.Model", function() {
 
     describe("#fireEvent", function() {
         it("exists", function() {
-            expect(Prototype.Model.prototype.fireEvent).toEqual(jasmine.any(Function));
+            expect(Protobone.Model.prototype.fireEvent).toEqual(jasmine.any(Function));
         });
 
         it("calls the given handlers", function() {
-            var m = new Prototype.Model();
+            var m = new Protobone.Model();
             var f = jasmine.createSpy('f1');
             var f2 = jasmine.createSpy('f2');
             var f3 = jasmine.createSpy('f3');

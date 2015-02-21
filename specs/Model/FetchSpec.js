@@ -1,18 +1,18 @@
-describe("Prototype.Model", function() {
+describe("Protobone.Model", function() {
 	describe("#fetch", function() {
 		it("exists", function() {
-			expect(Prototype.Model.prototype.fetch).toEqual(jasmine.any(Function));
+			expect(Protobone.Model.prototype.fetch).toEqual(jasmine.any(Function));
 		});
 
 		it("throws an error for new models", function() {
-			var m = new Prototype.Model();
+			var m = new Protobone.Model();
 			m.urlRoot = '/MyModel';
 			expect(m.fetch.bind(m)).toThrowError('Cannot be called for new Models');
 
 		});
 
 		it("calls sync for existing models correctly", function() {
-			var m = new Prototype.Model({id: 5});
+			var m = new Protobone.Model({id: 5});
 			m.urlRoot = '/MyModel';
 			spyOn(m,'sync');
 			m.fetch();
@@ -20,7 +20,7 @@ describe("Prototype.Model", function() {
 		});
 
 		it("calls parse after save was successful", function() {
-			var m = new Prototype.Model({id: 5});
+			var m = new Protobone.Model({id: 5});
 			var response = {some:'response'};
 
 			m.urlRoot = '/MyModel';
@@ -33,7 +33,7 @@ describe("Prototype.Model", function() {
 		});
 
 		it("calls given callback after save was successful", function() {
-			var m = new Prototype.Model({id: 5});
+			var m = new Protobone.Model({id: 5});
 			var response = {some:'response'};
 			var succCallback = jasmine.createSpy('Success Callback');
 

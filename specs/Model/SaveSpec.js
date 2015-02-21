@@ -1,11 +1,11 @@
-describe("Prototype.Model", function() {
+describe("Protobone.Model", function() {
 	describe("#save", function() {
 		it("exists", function() {
-			expect(Prototype.Model.prototype.save).toEqual(jasmine.any(Function));
+			expect(Protobone.Model.prototype.save).toEqual(jasmine.any(Function));
 		});
 
 		it("calls sync for new models correctly", function() {
-			var m = new Prototype.Model();
+			var m = new Protobone.Model();
 			m.urlRoot = '/MyModel';
 			spyOn(m,'sync');
 			m.save();
@@ -13,7 +13,7 @@ describe("Prototype.Model", function() {
 		});
 
 		it("calls sync for existing models correctly", function() {
-			var m = new Prototype.Model({id: 5});
+			var m = new Protobone.Model({id: 5});
 			m.urlRoot = '/MyModel';
 			spyOn(m,'sync');
 			m.save();
@@ -21,7 +21,7 @@ describe("Prototype.Model", function() {
 		});
 
 		it("calls parse after save was successful", function() {
-			var m = new Prototype.Model({id: 5});
+			var m = new Protobone.Model({id: 5});
 			var response = {some:'response'};
 
 			m.urlRoot = '/MyModel';
@@ -34,7 +34,7 @@ describe("Prototype.Model", function() {
 		});
 
 		it("calls given callback after save was successful", function() {
-			var m = new Prototype.Model({id: 5});
+			var m = new Protobone.Model({id: 5});
 			var response = {some:'response'};
 			var succCallback = jasmine.createSpy('Success Callback');
 
@@ -47,21 +47,20 @@ describe("Prototype.Model", function() {
 		});
 	});
 
-
 	describe("#sync", function() {
 		it("exists", function() {
-			expect(Prototype.Model.prototype.sync).toEqual(jasmine.any(Function));
+			expect(Protobone.Model.prototype.sync).toEqual(jasmine.any(Function));
 		});
 
-		it("just calls Prototype.Model.sync with the correct context", function() {
-			var m = new Prototype.Model();
-			spyOn(Prototype.Model,'sync').and.callFake(function() {
+		it("just calls Protobone.sync with the correct context", function() {
+			var m = new Protobone.Model();
+			spyOn(Protobone,'sync').and.callFake(function() {
 				return this;
 			});
 			var proofThis = m.sync(1,2,3);
 
-			expect(Prototype.Model.sync).toHaveBeenCalledWith(1,2,3);
-			expect(proofThis).toEqual(Prototype.Model);
+			expect(Protobone.sync).toHaveBeenCalledWith(1,2,3);
+			expect(proofThis).toEqual(Protobone);
 		});
 	});
 });
