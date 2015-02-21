@@ -4,8 +4,7 @@ module.exports = function(grunt) {
         jasmine: {
             customTemplate: {
                 src: [
-                    'src/Prototype.Model.js',
-                    'src/Prototype.Model.sync.js'
+                    'dist/prototype-model.debug.js'
                 ],
                 options: {
                     specs: ['specs/**/*Spec.js'],
@@ -28,19 +27,7 @@ module.exports = function(grunt) {
                     preserveComments: false
                 },
                 files: {
-                    'dist/prototype-model.min.js': ['src/Prototype.Model.js', 'src/Prototype.Model.sync.js']
-                }
-            },
-            distDebug: {
-                options: {
-                    mangle: false,
-                    compress: false,
-                    sourceMap: true,
-                    preserveComments: 'all',
-                    beautify: true
-                },
-                files: {
-                    'dist/prototype-model.debug.js': ['src/Prototype.Model.js', 'src/Prototype.Model.sync.js']
+                    'dist/prototype-model.min.js': ['dist/prototype-model.dist.js']
                 }
             }
         },
@@ -62,6 +49,37 @@ module.exports = function(grunt) {
                     linkNatives: 'true'
                 }
             }
+        },
+
+        browserify: {
+            options: {
+                browserifyOptions: {
+                    standalone: 'Prototype.Model'
+                }
+            },
+            watch: {
+                options: {
+                    debug: true,
+                    watch: true,
+                    keepAlive: true
+                },
+                src: 'src/main.js',
+                dest: 'dist/prototype-model.debug.js'
+            },
+            dev: {
+                options: {
+                    debug: true
+                },
+                src: 'src/main.js',
+                dest: 'dist/prototype-model.debug.js'
+            },
+            dist: {
+                options: {
+                    debug: false
+                },
+                src: 'src/main.js',
+                dest: 'dist/prototype-model.dist.js'
+            }
         }
     });
 
@@ -69,9 +87,10 @@ module.exports = function(grunt) {
     grunt.loadNpmTasks('grunt-contrib-uglify');
     grunt.loadNpmTasks('grunt-contrib-jshint');
     grunt.loadNpmTasks('grunt-contrib-yuidoc');
+    grunt.loadNpmTasks('grunt-browserify');
 
-    grunt.registerTask('test', 'Run test suite using jasmine', ['jasmine']);
-    grunt.registerTask('build', 'Build a single bundle', ['uglify']);
+    grunt.registerTask('test', 'Run test suite using jasmine', ['browserify:dev','jasmine']);
+    grunt.registerTask('build', 'Build a single bundle', ['browserify:dist','uglify']);
     grunt.registerTask('doc', 'Generate API doc', ['yuidoc']);
     grunt.registerTask('default', ['test']);
 };

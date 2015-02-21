@@ -21,13 +21,13 @@ manually using GIT:
 
 `git clone https://github.com/bylexus/prototypejs-model.git`
 
-Usage example
---------------
+Usage example: Standalone
+--------------------------
 
 ```html
 <!-- require prototype and the Prototype.Model addition: -->
 <script src="https://ajax.googleapis.com/ajax/libs/prototype/1.7.2.0/prototype.js"></script>
-<script src="dist/prototype-model.min.js"></script>
+<script src="prototypejs-model/dist/prototype-model.min.js"></script>
 
 <!-- Usage example -->
 <script>
@@ -53,6 +53,48 @@ Usage example
 	alex.save({onSuccess: function(res,model){
 	    console.log(model.getId());
 	}});
+</script>
+```
+
+Usage example: as AMD module using [requirejs](http://requirejs.org/)
+---------------------------------------------------------------------
+
+```html
+<!-- load prototype and requirejs: -->
+<script src="https://ajax.googleapis.com/ajax/libs/prototype/1.7.2.0/prototype.js"></script>
+<script src="http://requirejs.org/docs/release/2.1.16/minified/require.js"></script>
+<script>
+    // load the Prototype.Model class as AMD module:
+    require.config({
+        paths: {
+            'Prototype.Model': 'prototype-model/dist/prototype-model.min'
+        }
+    });
+
+    require(['Prototype.Model'], function(Model) {
+        // Create your own Model class:
+        var Person = Class.create(Model,{
+            urlRoot: '/entity/Person'
+        });
+
+        // Use an instance of the model:
+        var alex = new Person({
+            name: 'Schenkel',
+            firstname: 'Alex'
+        });
+
+        // add an update listener:
+        alex.on('updated', function(rec,newVals, oldVals) {
+            console.log("new values of "+rec.get('name'),newVals);
+        });
+
+        alex.set('age','too old');
+
+        // Make it persistent:
+        alex.save({onSuccess: function(res,model){
+            console.log(model.getId());
+        }});
+    });
 </script>
 ```
 
@@ -86,6 +128,11 @@ build docs:
 ```
 grung doc
 ```
+
+Changelog
+---------
+* 0.0.2: Switched build process do browserify to support UMD Modules and prepare for ES6
+* 0.0.1: first running version including Model
 
 
 TODO

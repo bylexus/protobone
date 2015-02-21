@@ -28,7 +28,7 @@
  * @class Prototype.Model
  * @constructor
  */
-Prototype.Model = Class.create({
+var Model = Class.create({
     idAttribute: 'id',
 
     /**
@@ -356,3 +356,6 @@ Prototype.Model = Class.create({
         return allTrue;
     }
 });
+
+// Adding support for JS Modules through browserify / ES 6:
+module.exports = Model;

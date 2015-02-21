@@ -1,103 +1,47 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="utf-8">
-    <title>src/Prototype.Model.js - Prototype.Model</title>
-    <link rel="stylesheet" href="http://yui.yahooapis.com/3.8.0pr2/build/cssgrids/cssgrids-min.css">
-    <link rel="stylesheet" href="../assets/vendor/prettify/prettify-min.css">
-    <link rel="stylesheet" href="../assets/css/main.css" id="site_styles">
-    <script src="http://yui.yahooapis.com/combo?3.8.0pr2/build/yui/yui-min.js"></script>
-</head>
-<body class="yui3-skin-sam">
+!function(e){if("object"==typeof exports&&"undefined"!=typeof module)module.exports=e();else if("function"==typeof define&&define.amd)define([],e);else{var o;"undefined"!=typeof window?o=window:"undefined"!=typeof global?o=global:"undefined"!=typeof self&&(o=self),(o.Prototype||(o.Prototype={})).Model=e()}}(function(){var define,module,exports;return (function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);var f=new Error("Cannot find module '"+o+"'");throw f.code="MODULE_NOT_FOUND",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(require,module,exports){
+var Model = require('./model/Model.js');
+var sync = require('./model/sync.js');
 
-<div id="doc">
-    <div id="hd" class="yui3-g header">
-        <div class="yui3-u-3-4">
-            <h1><a href="../index.html"><img src="../assets/css/logo.png" width="117" height="52">Prototype.Model: src/Prototype.Model.js</a></h1>
-        </div>
-        <div class="yui3-u-1-4 version">
-            <em>API Docs for: 0.0.0-alpha</em>
-        </div>
-    </div>
-    <div class="yui3-g">
+// Adding support for JS Modules through browserify:
+module.exports = Model;
 
-        <div id="sidebar" class="yui3-u">
-            <div id="modules" class="sidebox">
-                <div class="hd">
-                    <h2 class="no-toc">Modules</h2>
-                </div>
-                <div class="bd">
-                    <ul>
-                    </ul>
-                </div>
-            </div>
-            
-            <div id="classes" class="sidebox">
-                <div class="hd">
-                    <h2 class="no-toc">Classes</h2>
-                </div>
-                <div class="bd">
-                    <ul>
-                            <li><a href="../classes/Prototype.Model.html">Prototype.Model</a></li>
-                    </ul>
-                </div>
-            </div>
-            
-            
-            
-            
-            
-            <div id="fileTree" class="sidebox">
-                <div class="hd">
-                    <h2 class="no-toc">Files</h2>
-                </div>
-                <div class="bd">
-                    <ul><li>src/<ul><li><a href="../files/src_Prototype.Model.js.html">Prototype.Model.js</a></li><li><a href="../files/src_Prototype.Model.sync.js.html">Prototype.Model.sync.js</a></li></ul></li></ul>
-                </div>
-            </div>
-            
-        </div>
-
-        <div id="main" class="yui3-u">
-            <div class="content"><h4>src/Prototype.Model.js</h4>
-
-<pre class="code prettyprint linenums">
+},{"./model/Model.js":2,"./model/sync.js":3}],2:[function(require,module,exports){
 /**
  * PrototypeJS Model extension - Enables Prototype JS users to fetch / store
  * Models from / to a backend using AJAX / REST
  *
- * Inspired by (but not copied) [Backbone&#x27;s Backbone.Model](http://backbonejs.org/) and Backbone.sync
+ * Inspired by (but not copied) [Backbone's Backbone.Model](http://backbonejs.org/) and Backbone.sync
  *
  * Usage example:
  *
- * &#x60;&#x60;&#x60;javascript
+ * ```javascript
  * // Create your own Model class:
  * var Person = Class.create(Prototype.Model,{
- *     urlRoot: &#x27;/entity/Person&#x27;
+ *     urlRoot: '/entity/Person'
  * });
  *
  * // Use an instance of the model:
  * var alex = new Person({
- *     name: &#x27;Schenkel&#x27;,
- *     firstname: &#x27;Alex&#x27;
+ *     name: 'Schenkel',
+ *     firstname: 'Alex'
  * });
  * alex.save({onSuccess: function(res,model){
  *     console.log(model.getId());
  * }});
- * &#x60;&#x60;&#x60;
+ * ```
  *
- * @author Alexander Schenkel &lt;alex@alexi.ch&gt;
+ * @author Alexander Schenkel <alex@alexi.ch>
  * @copyright 2015 Alexander Schenkel
  * @license Released under the MIT License
  * @class Prototype.Model
  * @constructor
  */
-Prototype.Model = Class.create({
-    idAttribute: &#x27;id&#x27;,
+var Model = Class.create({
+    idAttribute: 'id',
 
     /**
      * The URL root for this Model. Must be set in child classes,
-     * e.g. to &#x27;/entities/Person&#x27;.
+     * e.g. to '/entities/Person'.
      * Used by the url() function to build the persistence URL.
      *
      * @property urlRoot
@@ -110,7 +54,7 @@ Prototype.Model = Class.create({
      * as attributes on new model instances.
      *
      * @method constructor
-     * @param {Object} data Initial data (key/value pairs) to set on the new Model instance, e.g.: &#x60;{name: &#x27;Alex&#x27;,age: 26}&#x60;
+     * @param {Object} data Initial data (key/value pairs) to set on the new Model instance, e.g.: `{name: 'Alex',age: 26}`
      */
     initialize: function(data) {
         data = data || {};
@@ -124,7 +68,7 @@ Prototype.Model = Class.create({
     },
 
     /**
-     * Returns the instance&#x27;s ID of the model. Null means it is a new, not saved
+     * Returns the instance's ID of the model. Null means it is a new, not saved
      * instance.
      *
      * @method getId
@@ -135,7 +79,7 @@ Prototype.Model = Class.create({
     },
 
     /**
-     * Sets the Model instance&#x27;s ID. It also sets it as attribute
+     * Sets the Model instance's ID. It also sets it as attribute
      * value so that it is sent to the server when synced.
      *
      * @method setId
@@ -153,8 +97,8 @@ Prototype.Model = Class.create({
      * or a plain object containing key/value pairs.
      *
      * @method set
-     * @param {string}/Object keyOrObject A string representing the key (e.g. &#x27;name&#x27;)
-     *    or an object with key/values (e.g. &#x27;name&#x27;:&#x27;alex&#x27;,&#x27;age&#x27;:&#x27;too old&#x27;)
+     * @param {string}/Object keyOrObject A string representing the key (e.g. 'name')
+     *    or an object with key/values (e.g. 'name':'alex','age':'too old')
      * @param {mixed} value The value to set if keyOrObject is a string. Ignored when keyOrObject is an object.
      * @return {this} Supports fluent interface by returning itself
      */
@@ -168,21 +112,21 @@ Prototype.Model = Class.create({
             }, this);
         } else {
             ret = this._setAttribute(keyOrObject, value,newValues,oldValues);
-            this.fireEvent(&#x27;updated&#x27;,this,newValues,oldValues);
+            this.fireEvent('updated',this,newValues,oldValues);
         }
         return ret;
     },
 
     /**
-     * Sets a single Model attribute (e.g. &#x27;name&#x27; to &#x27;Alex&#x27;). Internal helper function.
+     * Sets a single Model attribute (e.g. 'name' to 'Alex'). Internal helper function.
      * Please use set() instead.
      *
-     * @param {string} key The key of the attribute to set, e.g. &#x27;name&#x27;
+     * @param {string} key The key of the attribute to set, e.g. 'name'
      * @param {mixed} value The value to set
      * @return {this} Supports fluent interface by returning itself
      */
     _setAttribute: function(key, value,newVals, oldVals) {
-        if (typeof key === &#x27;string&#x27;) {
+        if (typeof key === 'string') {
             if (this._attributes[key] !== value) {
                 if (oldVals) oldVals[key] = this._dirtyAttributes[key];
                 if (newVals) newVals[key] = value;
@@ -221,18 +165,18 @@ Prototype.Model = Class.create({
      * method if you want to implement your own URL scheme. Here is how it works
      * by default:
      *
-     * - non-persistent state (id = null): return &#x27;&lt;urlRoot&gt;&#x27;
-     * - persistent state (id &lt;&gt; null): return &#x27;&lt;urlRoot&gt;/&lt;id&gt;&#x27;
+     * - non-persistent state (id = null): return '<urlRoot>'
+     * - persistent state (id <> null): return '<urlRoot>/<id>'
      *
      * @method url
-     * @return {String} The URL for this Model instance, e.g. &#x60;/root/Entity/3&#x60;
+     * @return {String} The URL for this Model instance, e.g. `/root/Entity/3`
      */
     url: function() {
         var url = this.urlRoot;
-        if (!url) throw new Error(&quot;urlRoot not set. Please define an urlRoot in your model.&quot;);
+        if (!url) throw new Error("urlRoot not set. Please define an urlRoot in your model.");
 
         if (!!this.getId()) {
-            url += &#x27;/&#x27; + String(this.getId());
+            url += '/' + String(this.getId());
         }
         return url;
     },
@@ -241,46 +185,46 @@ Prototype.Model = Class.create({
      * Makes this model persistent by sending the data to a REST interface (by default).
      * Make sure to set the urlRool property on class definition.
      *
-     * options are all options that Prototype&#x27;s Ajax.Request understands, so you
+     * options are all options that Prototype's Ajax.Request understands, so you
      * can e.g. deliver a onSuccess callback:
      *
-     * &#x60;&#x60;&#x60;javascript
+     * ```javascript
      * myModel.save({onSuccess: function(response,model){
      *     // do something after save here
      * }});
-     * &#x60;&#x60;&#x60;
+     * ```
      *
      * @method save
      * @param {Object} options Additional Ajax options to be sent to Ajax.Request.
      */
     save: function(options) {
         var url = this.url(),
-            method = !!this.getId()?&#x27;update&#x27;:&#x27;create&#x27;;
+            method = !!this.getId()?'update':'create';
 
         return this._request(url, method, options);
     },
 
     /**
-     * Fetches this Model&#x27;s representation from the server. Only
-     * allowed for existing (id &lt;&gt; null) models. options is passed
-     * along to Prototype&#x27;s Ajax.Request function.
+     * Fetches this Model's representation from the server. Only
+     * allowed for existing (id <> null) models. options is passed
+     * along to Prototype's Ajax.Request function.
      *
      * @method fetch
      * @param {Object} options Additional Ajax options to be sent to Ajax.Request.
      */
     fetch: function(options) {
-        if (!this.getId()) throw new Error(&#x27;Cannot be called for new Models&#x27;);
+        if (!this.getId()) throw new Error('Cannot be called for new Models');
 
         var url = this.url(),
-            method = &#x27;read&#x27;;
+            method = 'read';
 
         return this._request(url, method, options);
     },
 
     /**
      * invokes a delete request to the server.  Only
-     * allowed for existing (id &lt;&gt; null) models. options is passed
-     * along to Prototype&#x27;s Ajax.Request function.
+     * allowed for existing (id <> null) models. options is passed
+     * along to Prototype's Ajax.Request function.
      *
      * After the deletion was successful, the model instance is updated with the
      * server data, even if the server removed the instance.
@@ -289,10 +233,10 @@ Prototype.Model = Class.create({
      * @param {Object} options Additional Ajax options to be sent to Ajax.Request.
      */
     destroy: function(options) {
-        if (!this.getId()) throw new Error(&#x27;Cannot be called for new Models&#x27;);
+        if (!this.getId()) throw new Error('Cannot be called for new Models');
 
         var url = this.url(),
-            method = &#x27;delete&#x27;;
+            method = 'delete';
 
         return this._request(url, method, options);
     },
@@ -330,13 +274,13 @@ Prototype.Model = Class.create({
     },
 
     /**
-     * Called by save() and fetch() with the server&#x27;s data response. Fills in the
+     * Called by save() and fetch() with the server's data response. Fills in the
      * server response to the model. In the default implementation, it just
      * takes the plain JSON object from the server (if any) and store the values on the model.
      *
      */
     parse: function(response) {
-        if (response &amp;&amp; response.responseJSON) {
+        if (response && response.responseJSON) {
             this.set(response.responseJSON);
         }
     },
@@ -349,7 +293,7 @@ Prototype.Model = Class.create({
      * @return {Boolean}
      */
     hasAttribute: function(key) {
-        return Object.keys(this._attributes).indexOf(key) &gt;= 0;
+        return Object.keys(this._attributes).indexOf(key) >= 0;
     },
 
     /**
@@ -358,7 +302,7 @@ Prototype.Model = Class.create({
      * handler multiple times.
      *
      * @method on
-     * @param {String} eventName The name of the event, e.g. &#x27;updated&#x27;
+     * @param {String} eventName The name of the event, e.g. 'updated'
      * @param {Function} callback The listener function, called with event-specific {parameters}
      * @param {boolean} this
      */
@@ -375,7 +319,7 @@ Prototype.Model = Class.create({
      * all listerners from an event.
      *
      * @method off
-     * @param {String} eventName E.g. &#x27;updated&#x27;
+     * @param {String} eventName E.g. 'updated'
      * @param {Function} callback The callback to remove. If omitted, all callbacks
      *   for a specific event are removed
      * @param {Boolean} this
@@ -389,7 +333,7 @@ Prototype.Model = Class.create({
         } else {
             // only remove specific hander:
             handlerArr = this._listeners[eventName];
-            while (handlerArr &amp;&amp; handlerArr.indexOf(callback) &gt; -1) {
+            while (handlerArr && handlerArr.indexOf(callback) > -1) {
                 handlerArr.splice(handlerArr.indexOf(callback),1);
             }
         }
@@ -406,7 +350,7 @@ Prototype.Model = Class.create({
      * one listener returns false, fireEvent will also return false.
      *
      * @method fireEvent
-     * @param {String} eventName The event to fire, e.g. &#x27;updated&#x27;
+     * @param {String} eventName The event to fire, e.g. 'updated'
      * @return {Boolean} true when non of the listeners returned false, false if they do so.
      */
     fireEvent: function(eventName) {
@@ -414,22 +358,114 @@ Prototype.Model = Class.create({
             allTrue = true;
         $A(this._listeners[eventName]).each(function(listener) {
             if (listener instanceof Function) {
-                allTrue = allTrue &amp;&amp; listener.apply(null,args) !== false;
+                allTrue = allTrue && listener.apply(null,args) !== false;
             }
         }.bind(this));
         return allTrue;
     }
 });
 
-</pre>
+// Adding support for JS Modules through browserify:
+module.exports = Model;
 
-</div>
-        </div>
-    </div>
-</div>
-<script src="../assets/vendor/prettify/prettify-min.js"></script>
-<script>prettyPrint();</script>
-<script src="../assets/js/yui-prettify.js"></script>
-<script src="../assets/js/tabs.js"></script>
-</body>
-</html>
+},{}],3:[function(require,module,exports){
+/**
+ * PrototypeJS Model extension - Enables Prototype JS users to fetch / store
+ * Models from / to a backend using AJAX / REST
+ *
+ * Inspired by (but not copied) Backbone's Backbone.Model and Backbone.sync
+ * @see http://backbonejs.org/
+ *
+ * This is the static sync method (analog Backbone.sync), which does the server
+ * communication. If you want to implement your own method, e.g. if you have another
+ * backend interface, or even want to use local storage,
+ * override Prototype.Model.sync with your own implementation.
+ *
+ * @author Alexander Schenkel <alex@alexi.ch>
+ * @copyright 2015 Alexander Schenkel
+ * @license Released under the MIT License
+ * @class Prototype.Model
+ */
+ var Model = require('./Model.js');
+
+// Private stuff
+var httpMethods = {
+	'create': 'post',
+	'read'  : 'get',
+	'update': 'put',
+	'delete': 'delete'
+	// TODO: implement PATCH for non-full updates
+};
+var legacyMethods = {
+	'create': 'post',
+	'read'  : 'get',
+	'update': 'post',
+	'delete': 'post'
+};
+
+var mapMethods = function(method, emulateHTTP) {
+	return ((!!emulateHTTP) ? legacyMethods[method] : httpMethods[method]);
+};
+
+/**
+ * If set to true, only use GET (read) and POST (create,update,delete) HTTP
+ * Methods, and set the X-HTTP-Method-Override request header with the
+ * true method.
+ *
+ * NOTE: TODO: At the moment, only legacy methods (GET/POST) are supported (emulateHTTP: true),
+ * because the Prototype JS library does NOT support other requests than POST/GET.
+ * So set emulateHTTP to false does not change a thing, unfortunately...
+ *
+ * @property emulateHTTP
+ * @type {Boolean}
+ */
+Model.emulateHTTP = true;
+
+/**
+ * TODO: Implement emulateJSON to use a post body instead of RAW json
+ *
+ * @property emulateJSON
+ * @type {Boolean}
+ */
+Model.emulateJSON = false;
+
+/**
+ * This method is where the real server communication happens. It uses
+ * Prototype's Ajax.Request to send / load data to/from a REST backend.
+ * It is called in a static context (`Prototype.Model.sync`) from a Model's instance
+ * and can be overridden if you have to implement your own storage backend (e.g. localstore)
+ * or an incompatible API.
+ *
+ * The default method uses the following HTTP methods
+ *
+ * * method: create -> `POST /collection`
+ * * method: read   -> `GET  /collection[/id]`
+ * * method: update -> `POST /collection/id` (Request Header: `X-HTTP-Method-Override: put`)
+ * * method: delete -> `POST /collection/id` (Request Header: `X-HTTP-Method-Override: delete`)
+ *
+ * @method sync
+ * @param {String} url The URL for the request
+ * @param {String} method The HTTP method. Only supported at the moment: 'get', 'post' (as of Prototype's limitation)
+ * @param {Prototype.Model} model A model instance to be sent / updated to /from the server
+ * @param {Object} options Additional Ajax.Request options
+ * @static
+ */
+Model.sync = function(url, method, model, options) {
+	var httpMethod = mapMethods(method, this.emulateHTTP),
+		ajaxOptions = {
+			method: httpMethod,
+			contentType: 'application/json',
+			postBody: Object.toJSON(model.get()),
+			requestHeaders: {}
+		};
+	if (this.emulateHTTP) {
+		ajaxOptions.requestHeaders['X-HTTP-Method-Override'] = httpMethods[method];
+	}
+	options = options || {};
+	Object.extend(ajaxOptions, options);
+
+	return new Ajax.Request(url, ajaxOptions);
+};
+
+},{"./Model.js":2}]},{},[1])(1)
+});
