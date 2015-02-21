@@ -9,13 +9,20 @@ This addition to [the PrototypeJS Library](http://prototypejs.org/) enables user
 
 This library is heavily inspired (but not copied) by the famous [Backbone](http://backbonejs.org/) library. Most of the methods use the same name. It exists mainly for an old project with no possibility to switch to a Model-enabled framework like backbone.
 
-Usage example:
---------------
-Fetch with:
 
-```
-git clone https://github.com/bylexus/prototypejs-model.git
-```
+Install
+--------
+
+with [Bower](http://bower.io/):
+
+`bower install https://github.com/bylexus/prototypejs-model.git`
+
+manually using GIT:
+
+`git clone https://github.com/bylexus/prototypejs-model.git`
+
+Usage example
+--------------
 
 ```html
 <!-- require prototype and the Prototype.Model addition: -->
