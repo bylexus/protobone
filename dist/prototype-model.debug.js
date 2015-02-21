@@ -2,7 +2,7 @@
 var Model = require('./model/Model.js');
 var sync = require('./model/sync.js');
 
-// Adding support for JS Modules through browserify:
+// Adding support for JS Modules (UMD Model) through browserify / ES 6:
 module.exports = Model;
 
 },{"./model/Model.js":2,"./model/sync.js":3}],2:[function(require,module,exports){
@@ -365,7 +365,7 @@ var Model = Class.create({
     }
 });
 
-// Adding support for JS Modules through browserify:
+// Adding support for JS Modules through browserify / ES 6:
 module.exports = Model;
 
 },{}],3:[function(require,module,exports){

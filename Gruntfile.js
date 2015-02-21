@@ -90,7 +90,7 @@ module.exports = function(grunt) {
     grunt.loadNpmTasks('grunt-browserify');
 
     grunt.registerTask('test', 'Run test suite using jasmine', ['browserify:dev','jasmine']);
-    grunt.registerTask('build', 'Build a single bundle', ['browserify:dist','uglify']);
+    grunt.registerTask('build', 'Build a single bundle', ['browserify:dev','browserify:dist','uglify']);
     grunt.registerTask('doc', 'Generate API doc', ['yuidoc']);
     grunt.registerTask('default', ['test']);
 };
