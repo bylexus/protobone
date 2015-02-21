@@ -1,5 +1,6 @@
 module.exports = function(grunt) {
     grunt.initConfig({
+        pkg: grunt.file.readJSON('package.json'),
         jasmine: {
             customTemplate: {
                 src: [
@@ -48,23 +49,26 @@ module.exports = function(grunt) {
             all: ['Gruntfile.js', 'src/**/*.js', 'specs/**/*.js','!specs/prototype.js']
         },
 
-        jsdoc : {
-            dist : {
-                src: ['src/*.js'],
+        yuidoc: {
+            compile: {
+                name: 'Prototype.Model',
+                description: '<%= pkg.description %>',
+                version: '<%= pkg.version %>',
+                url: '<%= pkg.homepage %>',
                 options: {
-                    destination: 'jsdoc',
-                    readme: 'README.md',
-                    configure: 'jsdoc.json'
+                    paths: 'src/',
+                    themedir: 'docs-theme/',
+                    outdir: 'docs/',
+                    linkNatives: 'true'
                 }
             }
         }
-
     });
 
     grunt.loadNpmTasks('grunt-contrib-jasmine');
     grunt.loadNpmTasks('grunt-contrib-uglify');
     grunt.loadNpmTasks('grunt-contrib-jshint');
-    grunt.loadNpmTasks('grunt-jsdoc');
+    grunt.loadNpmTasks('grunt-contrib-yuidoc');
 
     grunt.registerTask('test', 'Run test suite using jasmine', ['jasmine']);
     grunt.registerTask('default', ['test']);

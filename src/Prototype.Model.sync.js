@@ -7,12 +7,13 @@
  *
  * This is the static sync method (analog Backbone.sync), which does the server
  * communication. If you want to implement your own method, e.g. if you have another
- * backend interface, or even want to use local storage, 
+ * backend interface, or even want to use local storage,
  * override Prototype.Model.sync with your own implementation.
  *
  * @author Alexander Schenkel <alex@alexi.ch>
  * @copyright 2015 Alexander Schenkel
  * @license Released under the MIT License
+ * @class Prototype.Model
  */
 (function(P) {
 	// Private stuff
@@ -39,7 +40,7 @@
 		Object.extend(P.Model, {
 			/**
 			 * If set to true, only use GET (read) and POST (create,update,delete) HTTP
-			 * Methods, and set the X-HTTP-Method-Override request header with the 
+			 * Methods, and set the X-HTTP-Method-Override request header with the
 			 * true method.
 			 *
 			 * NOTE: TODO: At the moment, only legacy methods (GET/POST) are supported (emulateHTTP: true),
@@ -55,18 +56,23 @@
 			/**
 			 * This method is where the real server communication happens. It uses
 			 * Prototype's Ajax.Request to send / load data to/from a REST backend.
+             * It is called in a static context (`Prototype.Model.sync`) from a Model's instance
+             * and can be overridden if you have to implement your own storage backend (e.g. localstore)
+             * or an incompatible API.
 			 *
-			 * Override this static function if you want to implement your own
-			 * method here, maybe your backend API does not match the one provieded here.
+			 * The default method uses the following HTTP methods
 			 *
-			 * The default method uses the following REST conventions
-			 * (see also http://backbonejs.org/#Sync, which heavily inspired this code here):
-			 *
-			 * method: create -> POST   /collection
-			 * method: read   -> GET   /collection[/id]
-			 * method: update -> PUT   /collection/id
-			 * ((TODO method: patch  -> PATCH   /collection/id ))
-			 * method: delete -> DELETE   /collection/id
+			 * * method: create -> `POST /collection`
+			 * * method: read   -> `GET  /collection[/id]`
+			 * * method: update -> `POST /collection/id` (Request Header: `X-HTTP-Method-Override: put`)
+			 * * method: delete -> `POST /collection/id` (Request Header: `X-HTTP-Method-Override: delete`)
+             *
+             * @method sync
+             * @param {String} url The URL for the request
+             * @param {String} method The HTTP method. Only supported at the moment: 'get', 'post' (as of Prototype's limitation)
+             * @param {Prototype.Model} model A model instance to be sent / updated to /from the server
+             * @param {Object} options Additional Ajax.Request options
+             * @static
 			 */
 			sync: function(url, method, model, options) {
 				var httpMethod = mapMethods(method, this.emulateHTTP),

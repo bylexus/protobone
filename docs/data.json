@@ -1,0 +1,431 @@
+{
+    "project": {
+        "name": "Prototype.Model",
+        "description": "PrototypeJS addition to provide syncable Models (the 'M' in 'MVC')",
+        "version": "0.0.0-alpha",
+        "url": "https://github.com/bylexus/prototypejs-model.git"
+    },
+    "files": {
+        "src/Prototype.Model.js": {
+            "name": "src/Prototype.Model.js",
+            "modules": {},
+            "classes": {},
+            "fors": {},
+            "namespaces": {}
+        },
+        "src/Prototype.Model.sync.js": {
+            "name": "src/Prototype.Model.sync.js",
+            "modules": {},
+            "classes": {
+                "Prototype.Model": 1
+            },
+            "fors": {},
+            "namespaces": {}
+        }
+    },
+    "modules": {},
+    "classes": {
+        "Prototype.Model": {
+            "name": "Prototype.Model",
+            "shortname": "Prototype.Model",
+            "classitems": [],
+            "plugins": [],
+            "extensions": [],
+            "plugin_for": [],
+            "extension_for": [],
+            "file": "src/Prototype.Model.sync.js",
+            "line": 1,
+            "description": "PrototypeJS Model extension - Enables Prototype JS users to fetch / store\nModels from / to a backend using AJAX / REST\n\nInspired by (but not copied) Backbone's Backbone.Model and Backbone.sync",
+            "author": "Alexander Schenkel <alex@alexi.ch>",
+            "copyright": "2015 Alexander Schenkel",
+            "license": "Released under the MIT License",
+            "is_constructor": 1,
+            "see": [
+                "http://backbonejs.org/\n\nThis is the static sync method (analog Backbone.sync)",
+                "which does the server\ncommunication. If you want to implement your own method",
+                "e.g. if you have another\nbackend interface",
+                "or even want to use local storage",
+                "override Prototype.Model.sync with your own implementation."
+            ]
+        }
+    },
+    "classitems": [
+        {
+            "file": "src/Prototype.Model.js",
+            "line": 34,
+            "description": "The URL root for this Model. Must be set in child classes,\ne.g. to '/entities/Person'.\nUsed by the url() function to build the persistence URL.",
+            "itemtype": "property",
+            "name": "urlRoot",
+            "type": "String",
+            "class": "Prototype.Model"
+        },
+        {
+            "file": "src/Prototype.Model.js",
+            "line": 44,
+            "description": "Constructor. Sets the given data (key/value pairs)\nas attributes on new model instances.",
+            "itemtype": "method",
+            "name": "constructor",
+            "params": [
+                {
+                    "name": "data",
+                    "description": "Initial data (key/value pairs) to set on the new Model instance, e.g.: `{name: 'Alex',age: 26}`",
+                    "type": "Object"
+                }
+            ],
+            "class": "Prototype.Model"
+        },
+        {
+            "file": "src/Prototype.Model.js",
+            "line": 56,
+            "class": "Prototype.Model"
+        },
+        {
+            "file": "src/Prototype.Model.js",
+            "line": 62,
+            "description": "Returns the instance's ID of the model. Null means it is a new, not saved\ninstance.",
+            "itemtype": "method",
+            "name": "getId",
+            "return": {
+                "description": "The ID (int, string), if any",
+                "type": "Mixed"
+            },
+            "class": "Prototype.Model"
+        },
+        {
+            "file": "src/Prototype.Model.js",
+            "line": 73,
+            "description": "Sets the Model instance's ID. It also sets it as attribute\nvalue so that it is sent to the server when synced.",
+            "itemtype": "method",
+            "name": "setId",
+            "params": [
+                {
+                    "name": "id",
+                    "description": "The id to set (e.g. an integer, or even a string)",
+                    "type": "Mixed"
+                }
+            ],
+            "return": {
+                "description": "Supports fluent interface by returning itself",
+                "type": "This"
+            },
+            "class": "Prototype.Model"
+        },
+        {
+            "file": "src/Prototype.Model.js",
+            "line": 87,
+            "description": "Sets Model attributes (key/values). Takes either a key and a value,\nor a plain object containing key/value pairs.",
+            "itemtype": "method",
+            "name": "set",
+            "params": [
+                {
+                    "name": "/Object",
+                    "description": "keyOrObject A string representing the key (e.g. 'name')\n   or an object with key/values (e.g. 'name':'alex','age':'too old')",
+                    "type": "String"
+                },
+                {
+                    "name": "value",
+                    "description": "The value to set if keyOrObject is a string. Ignored when keyOrObject is an object.",
+                    "type": "Mixed"
+                }
+            ],
+            "return": {
+                "description": "Supports fluent interface by returning itself",
+                "type": "This"
+            },
+            "class": "Prototype.Model"
+        },
+        {
+            "file": "src/Prototype.Model.js",
+            "line": 112,
+            "description": "Sets a single Model attribute (e.g. 'name' to 'Alex'). Internal helper function.\nPlease use set() instead.",
+            "params": [
+                {
+                    "name": "key",
+                    "description": "The key of the attribute to set, e.g. 'name'",
+                    "type": "String"
+                },
+                {
+                    "name": "value",
+                    "description": "The value to set",
+                    "type": "Mixed"
+                }
+            ],
+            "return": {
+                "description": "Supports fluent interface by returning itself",
+                "type": "This"
+            },
+            "class": "Prototype.Model"
+        },
+        {
+            "file": "src/Prototype.Model.js",
+            "line": 136,
+            "description": "Returns a specific attribute, or all if key is omitted",
+            "itemtype": "method",
+            "name": "get",
+            "params": [
+                {
+                    "name": "key",
+                    "description": "The name of the attribute to get. If omitted, an object\n   containing all attributes (key/value) is returned.",
+                    "type": "String"
+                }
+            ],
+            "return": {
+                "description": "The value of the requested attribute, or an object with all attributes",
+                "type": "Mixed"
+            },
+            "class": "Prototype.Model"
+        },
+        {
+            "file": "src/Prototype.Model.js",
+            "line": 155,
+            "description": "Creates the REST url for the actual state of the Model. Override this\nmethod if you want to implement your own URL scheme. Here is how it works\nby default:\n\n- non-persistent state (id = null): return '<urlRoot>'\n- persistent state (id <> null): return '<urlRoot>/<id>'",
+            "itemtype": "method",
+            "name": "url",
+            "return": {
+                "description": "The URL for this Model instance, e.g. `/root/Entity/3`",
+                "type": "String"
+            },
+            "class": "Prototype.Model"
+        },
+        {
+            "file": "src/Prototype.Model.js",
+            "line": 176,
+            "description": "Makes this model persistent by sending the data to a REST interface (by default).\nMake sure to set the urlRool property on class definition.\n\noptions are all options that Prototype's Ajax.Request understands, so you\ncan e.g. deliver a onSuccess callback:\n\n```javascript\nmyModel.save({onSuccess: function(response,model){\n    // do something after save here\n}});\n```",
+            "itemtype": "method",
+            "name": "save",
+            "params": [
+                {
+                    "name": "options",
+                    "description": "Additional Ajax options to be sent to Ajax.Request.",
+                    "type": "Object"
+                }
+            ],
+            "class": "Prototype.Model"
+        },
+        {
+            "file": "src/Prototype.Model.js",
+            "line": 199,
+            "description": "Fetches this Model's representation from the server. Only\nallowed for existing (id <> null) models. options is passed\nalong to Prototype's Ajax.Request function.",
+            "itemtype": "method",
+            "name": "fetch",
+            "params": [
+                {
+                    "name": "options",
+                    "description": "Additional Ajax options to be sent to Ajax.Request.",
+                    "type": "Object"
+                }
+            ],
+            "class": "Prototype.Model"
+        },
+        {
+            "file": "src/Prototype.Model.js",
+            "line": 216,
+            "description": "invokes a delete request to the server.  Only\nallowed for existing (id <> null) models. options is passed\nalong to Prototype's Ajax.Request function.\n\nAfter the deletion was successful, the model instance is updated with the\nserver data, even if the server removed the instance.",
+            "itemtype": "method",
+            "name": "destroy",
+            "params": [
+                {
+                    "name": "options",
+                    "description": "Additional Ajax options to be sent to Ajax.Request.",
+                    "type": "Object"
+                }
+            ],
+            "class": "Prototype.Model"
+        },
+        {
+            "file": "src/Prototype.Model.js",
+            "line": 236,
+            "description": "internal helper function for initiating the requests for save, fetch, destroy",
+            "class": "Prototype.Model"
+        },
+        {
+            "file": "src/Prototype.Model.js",
+            "line": 257,
+            "description": "Just calls Prototype.Model.sync. If you want your own, Model-specific implementation,\noverride this function.",
+            "see": [
+                "Prototype.model.sync. Also here: inspired by http://backbonejs.org/#Sync"
+            ],
+            "itemtype": "method",
+            "name": "sync",
+            "class": "Prototype.Model"
+        },
+        {
+            "file": "src/Prototype.Model.js",
+            "line": 268,
+            "description": "Called by save() and fetch() with the server's data response. Fills in the\nserver response to the model. In the default implementation, it just\ntakes the plain JSON object from the server (if any) and store the values on the model.",
+            "class": "Prototype.Model"
+        },
+        {
+            "file": "src/Prototype.Model.js",
+            "line": 280,
+            "description": "Checks if the model has a certain attribute.",
+            "itemtype": "method",
+            "name": "hasAttribute",
+            "params": [
+                {
+                    "name": "key",
+                    "description": "The attribute name to check",
+                    "type": "String"
+                }
+            ],
+            "return": {
+                "description": "",
+                "type": "Boolean"
+            },
+            "class": "Prototype.Model"
+        },
+        {
+            "file": "src/Prototype.Model.js",
+            "line": 291,
+            "description": "Registers an event handler.\nIt does not check on duplicity, so you can add the same event\nhandler multiple times.",
+            "itemtype": "method",
+            "name": "on",
+            "params": [
+                {
+                    "name": "eventName",
+                    "description": "The name of the event, e.g. 'updated'",
+                    "type": "String"
+                },
+                {
+                    "name": "callback",
+                    "description": "The listener function, called with event-specific {parameters}",
+                    "type": "Function"
+                },
+                {
+                    "name": "this",
+                    "description": "",
+                    "type": "Boolean"
+                }
+            ],
+            "class": "Prototype.Model"
+        },
+        {
+            "file": "src/Prototype.Model.js",
+            "line": 309,
+            "description": "Removes a specific event handler for an event, or removes\nall listerners from an event.",
+            "itemtype": "method",
+            "name": "off",
+            "params": [
+                {
+                    "name": "eventName",
+                    "description": "E.g. 'updated'",
+                    "type": "String"
+                },
+                {
+                    "name": "callback",
+                    "description": "The callback to remove. If omitted, all callbacks\n  for a specific event are removed",
+                    "type": "Function"
+                },
+                {
+                    "name": "this",
+                    "description": "",
+                    "type": "Boolean"
+                }
+            ],
+            "class": "Prototype.Model"
+        },
+        {
+            "file": "src/Prototype.Model.js",
+            "line": 335,
+            "description": "Fires an event, informing all listneners that are registered for\nthe given event name. The fireEvent function can be called with\nany number of additional arguments, which are then passed to the event\nhandler function.\n\nReturns true if NONE of the registered handlers return false: As soon as\none listener returns false, fireEvent will also return false.",
+            "itemtype": "method",
+            "name": "fireEvent",
+            "params": [
+                {
+                    "name": "eventName",
+                    "description": "The event to fire, e.g. 'updated'",
+                    "type": "String"
+                }
+            ],
+            "return": {
+                "description": "true when non of the listeners returned false, false if they do so.",
+                "type": "Boolean"
+            },
+            "class": "Prototype.Model"
+        },
+        {
+            "file": "src/Prototype.Model.sync.js",
+            "line": 41,
+            "description": "If set to true, only use GET (read) and POST (create,update,delete) HTTP\nMethods, and set the X-HTTP-Method-Override request header with the\ntrue method.\n\nNOTE: TODO: At the moment, only legacy methods (GET/POST) are supported (emulateHTTP: true),\nbecause the Prototype JS library does NOT support other requests than POST/GET.\nSo set emulateHTTP to false does not change a thing, unfortunately...",
+            "class": "Prototype.Model"
+        },
+        {
+            "file": "src/Prototype.Model.sync.js",
+            "line": 53,
+            "class": "Prototype.Model"
+        },
+        {
+            "file": "src/Prototype.Model.sync.js",
+            "line": 56,
+            "description": "This method is where the real server communication happens. It uses\nPrototype's Ajax.Request to send / load data to/from a REST backend.\nIt is called in a static context (`Prototype.Model.sync`) from a Model's instance\nand can be overridden if you have to implement your own storage backend (e.g. localstore)\nor an incompatible API.\n\nThe default method uses the following HTTP methods\n\n* method: create -> `POST /collection`\n* method: read   -> `GET  /collection[/id]`\n* method: update -> `POST /collection/id` (Request Header: `X-HTTP-Method-Override: put`)\n* method: delete -> `POST /collection/id` (Request Header: `X-HTTP-Method-Override: delete`)",
+            "itemtype": "method",
+            "name": "sync",
+            "params": [
+                {
+                    "name": "url",
+                    "description": "The URL for the request",
+                    "type": "String"
+                },
+                {
+                    "name": "method",
+                    "description": "The HTTP method. Only supported at the moment: 'get', 'post' (as of Prototype's limitation)",
+                    "type": "String"
+                },
+                {
+                    "name": "model",
+                    "description": "A model instance to be sent / updated to /from the server",
+                    "type": "Prototype.Model"
+                },
+                {
+                    "name": "options",
+                    "description": "Additional Ajax.Request options",
+                    "type": "Object"
+                }
+            ],
+            "static": 1,
+            "class": "Prototype.Model"
+        }
+    ],
+    "warnings": [
+        {
+            "message": "unknown tag: copyright",
+            "line": " src/Prototype.Model.js:1"
+        },
+        {
+            "message": "unknown tag: license",
+            "line": " src/Prototype.Model.js:1"
+        },
+        {
+            "message": "unknown tag: copyright",
+            "line": " src/Prototype.Model.sync.js:1"
+        },
+        {
+            "message": "unknown tag: license",
+            "line": " src/Prototype.Model.sync.js:1"
+        },
+        {
+            "message": "Missing item type",
+            "line": " src/Prototype.Model.js:56"
+        },
+        {
+            "message": "Missing item type\nSets a single Model attribute (e.g. 'name' to 'Alex'). Internal helper function.\nPlease use set() instead.",
+            "line": " src/Prototype.Model.js:112"
+        },
+        {
+            "message": "Missing item type\ninternal helper function for initiating the requests for save, fetch, destroy",
+            "line": " src/Prototype.Model.js:236"
+        },
+        {
+            "message": "Missing item type\nCalled by save() and fetch() with the server's data response. Fills in the\nserver response to the model. In the default implementation, it just\ntakes the plain JSON object from the server (if any) and store the values on the model.",
+            "line": " src/Prototype.Model.js:268"
+        },
+        {
+            "message": "Missing item type\nIf set to true, only use GET (read) and POST (create,update,delete) HTTP\nMethods, and set the X-HTTP-Method-Override request header with the\ntrue method.\n\nNOTE: TODO: At the moment, only legacy methods (GET/POST) are supported (emulateHTTP: true),\nbecause the Prototype JS library does NOT support other requests than POST/GET.\nSo set emulateHTTP to false does not change a thing, unfortunately...",
+            "line": " src/Prototype.Model.sync.js:41"
+        },
+        {
+            "message": "Missing item type",
+            "line": " src/Prototype.Model.sync.js:53"
+        }
+    ]
+}
