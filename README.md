@@ -53,6 +53,12 @@ Usage example: Standalone
     alex.save({onSuccess: function(res,model){
         console.log(model.getId());
     }});
+
+    // Load an entity:
+    alex = new Person({id: 4});
+    alex.fetch({onSuccess: function() {
+        console.log('done!');
+    }});
 </script>
 ```
 
@@ -94,6 +100,12 @@ Usage example: as AMD module using [requirejs](http://requirejs.org/)
         alex.save({onSuccess: function(res,model){
             console.log(model.getId());
         }});
+
+        // Load an entity:
+        alex = new Person({id: 4});
+        alex.fetch({onSuccess: function() {
+            console.log('done!');
+        }});
     });
 </script>
 ```
@@ -126,11 +138,12 @@ grunt uglify
 
 build docs:
 ```
-grung doc
+grunt doc
 ```
 
 Changelog
 ---------
+* 0.0.4: removed underscore dependency, switched all underscore code to prototype code
 * 0.0.3: Changed Name and Namespace from "Prototype.Model" to "Protobone" to make the Library independant from the Prototype namespace and for better UMD integration
 * 0.0.2: Switched build process do browserify to support UMD Modules and prepare for ES6
 * 0.0.1: first running version including Model

@@ -28,9 +28,6 @@
  * @class Protobone.Model
  * @constructor
  */
-var _ = require('underscore');
-var statics = require('../statics');
-
 var Model = Class.create({
     idAttribute: 'id',
 
@@ -100,9 +97,9 @@ var Model = Class.create({
     set: function(keyOrObject, value) {
         var oldValues = {},
             newValues = {};
-        if (_.isObject(keyOrObject)) {
-            _.each(_.keys(keyOrObject),function(key) {
-                this.set(key, keyOrObject[key]);
+        if (keyOrObject instanceof Object) {
+            $H(keyOrObject).each(function(item) {
+                this.set(item.key, item.value);
             }, this);
         } else {
             this._setAttribute(keyOrObject, value,newValues,oldValues);
@@ -145,7 +142,7 @@ var Model = Class.create({
      */
     get: function(key) {
         if (!key) {
-            return _.clone(this._attributes);
+            return Object.clone(this._attributes);
         }
         if (this.hasAttribute(key)) {
             return this._attributes[key];
@@ -242,15 +239,15 @@ var Model = Class.create({
         var syncOptions = {};
 
         options = options || {};
-        _.extend(syncOptions, {
-            onSuccess: (_.bind(function(callback) {
-                return _.bind(function(response) {
+        Object.extend(syncOptions, {
+            onSuccess: (function(callback) {
+                return function(response) {
                     this.parse(response);
-                    if (_.isFunction(callback)) {
+                    if (callback instanceof Function) {
                         callback(response,this);
                     }
-                },this);
-            },this)(options.onSuccess))
+                }.bind(this);
+            }.bind(this)(options.onSuccess))
         });
 
         return this.sync(url, method, this, syncOptions);
@@ -264,7 +261,7 @@ var Model = Class.create({
      * @method sync
      */
     sync: function() {
-        return statics.sync.apply(statics,arguments);
+        return Protobone.sync.apply(Protobone,arguments);
     },
 
     /**
@@ -287,7 +284,7 @@ var Model = Class.create({
      * @return {Boolean}
      */
     hasAttribute: function(key) {
-        return _.indexOf(_.keys(this._attributes),key) >= 0;
+        return Object.keys(this._attributes).indexOf(key) >= 0;
     },
 
     /**
@@ -325,10 +322,10 @@ var Model = Class.create({
             // remove all handlers for an event:
             this._listeners[eventName] = [];
         } else {
-            // only remove specific handler:
+            // only remove specific hander:
             handlerArr = this._listeners[eventName];
-            while (handlerArr && _.indexOf(handlerArr,callback) > -1) {
-                handlerArr.splice(_.indexOf(handlerArr,callback),1);
+            while (handlerArr && handlerArr.indexOf(callback) > -1) {
+                handlerArr.splice(handlerArr.indexOf(callback),1);
             }
         }
         return this;
@@ -348,13 +345,13 @@ var Model = Class.create({
      * @return {Boolean} true when non of the listeners returned false, false if they do so.
      */
     fireEvent: function(eventName) {
-        var args = _.toArray(arguments).splice(1),
+        var args = $A(arguments).splice(1),
             allTrue = true;
-        _.each(_.toArray(this._listeners[eventName]),_.bind(function(listener) {
-            if (_.isFunction(listener)) {
+        $A(this._listeners[eventName]).each(function(listener) {
+            if (listener instanceof Function) {
                 allTrue = allTrue && listener.apply(null,args) !== false;
             }
-        },this));
+        }.bind(this));
         return allTrue;
     }
 });

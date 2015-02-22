@@ -1,6 +1,5 @@
 {
   "name": "protobone",
-  "version": "0.0.3",
   "homepage": "https://github.com/bylexus/protobone",
   "authors": [
     "Alexander Schenkel <alex@alexi.ch>"
@@ -9,6 +8,7 @@
   "moduleType": [
     "globals"
   ],
+  "main":"dist/protobone.min.js",
   "keywords": [
     "prototypejs",
     "model",
@@ -21,6 +21,9 @@
     "node_modules",
     "bower_components",
     "test",
-    "tests"
+    "tests",
+    "specs",
+    "docs-theme",
+    "fixtures"
   ]
 }

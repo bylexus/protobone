@@ -1,9 +1,8 @@
 {
   "name": "protobone",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "description": "Backbone-inspired PrototypeJS addition to provide syncable Models (the 'M' in 'MVC')",
   "dependencies": {
-    "grunt": "^0.4.5"
   },
   "devDependencies": {
     "browserify": "^9.0.3",
