@@ -28,6 +28,7 @@
  * @class Protobone.Model
  * @constructor
  */
+var statics = require('../statics.js');
 var Model = Class.create({
     idAttribute: 'id',
 
@@ -261,7 +262,7 @@ var Model = Class.create({
      * @method sync
      */
     sync: function() {
-        return Protobone.sync.apply(Protobone,arguments);
+        return statics.sync.apply(statics,arguments);
     },
 
     /**

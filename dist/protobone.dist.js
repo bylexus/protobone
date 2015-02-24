@@ -38,6 +38,7 @@ module.exports = Object.extend(statics, {
  * @class Protobone.Model
  * @constructor
  */
+var statics = require('../statics.js');
 var Model = Class.create({
     idAttribute: 'id',
 
@@ -271,7 +272,7 @@ var Model = Class.create({
      * @method sync
      */
     sync: function() {
-        return Protobone.sync.apply(Protobone,arguments);
+        return statics.sync.apply(statics,arguments);
     },
 
     /**
@@ -369,7 +370,7 @@ var Model = Class.create({
 // Adding support for JS Modules through browserify / ES 6:
 module.exports = Model;
 
-},{}],3:[function(require,module,exports){
+},{"../statics.js":3}],3:[function(require,module,exports){
 /**
  * PrototypeJS Model extension - Enables Prototype JS users to fetch / store
  * Models from / to a backend using AJAX / REST
@@ -390,24 +391,24 @@ module.exports = Model;
 
 // Private stuff
 var httpMethods = {
-	'create': 'post',
-	'read'  : 'get',
-	'update': 'put',
-	'delete': 'delete'
-	// TODO: implement PATCH for non-full updates
+    'create': 'post',
+    'read'  : 'get',
+    'update': 'put',
+    'delete': 'delete'
+    // TODO: implement PATCH for non-full updates
 };
 var legacyMethods = {
-	'create': 'post',
-	'read'  : 'get',
-	'update': 'post',
-	'delete': 'post'
+    'create': 'post',
+    'read'  : 'get',
+    'update': 'post',
+    'delete': 'post'
 };
 
 var mapMethods = function(method, emulateHTTP) {
-	return ((!!emulateHTTP) ? legacyMethods[method] : httpMethods[method]);
+    return ((!!emulateHTTP) ? legacyMethods[method] : httpMethods[method]);
 };
 
-module.exports = {
+var statics = {
     /**
      * If set to true, only use GET (read) and POST (create,update,delete) HTTP
      * Methods, and set the X-HTTP-Method-Override request header with the
@@ -452,14 +453,14 @@ module.exports = {
      * @static
      */
     sync: function(url, method, model, options) {
-        var httpMethod = mapMethods(method, this.emulateHTTP),
+        var httpMethod = mapMethods(method, statics.emulateHTTP),
             ajaxOptions = {
                 method: httpMethod,
                 contentType: 'application/json',
                 postBody: Object.toJSON(model.get()),
                 requestHeaders: {}
             };
-        if (this.emulateHTTP) {
+        if (statics.emulateHTTP) {
             ajaxOptions.requestHeaders['X-HTTP-Method-Override'] = httpMethods[method];
         }
         options = options || {};
@@ -468,6 +469,8 @@ module.exports = {
         return new Ajax.Request(url, ajaxOptions);
     }
 };
+
+module.exports = statics;
 
 },{}]},{},[1])(1)
 });
