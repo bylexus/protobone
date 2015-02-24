@@ -1,7 +1,8 @@
 !function(e){if("object"==typeof exports&&"undefined"!=typeof module)module.exports=e();else if("function"==typeof define&&define.amd)define([],e);else{var o;"undefined"!=typeof window?o=window:"undefined"!=typeof global?o=global:"undefined"!=typeof self&&(o=self),o.Protobone=e()}}(function(){var define,module,exports;return (function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);var f=new Error("Cannot find module '"+o+"'");throw f.code="MODULE_NOT_FOUND",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(require,module,exports){
 /**
- * Base class for Protobone classes. Shared functions which are needed in all classed.
-
+ * Base class for Protobone classes. Shared functions which are needed in all classes. This class is not
+ * meant to be instantiated by itself.
+ *
  * @author Alexander Schenkel <alex@alexi.ch>
  * @copyright 2015 Alexander Schenkel
  * @license Released under the MIT License
@@ -97,6 +98,7 @@ module.exports = Base;
  * @copyright 2015 Alexander Schenkel
  * @license Released under the MIT License
  * @class Protobone.Collection
+ * @extends Protobone.Base
  * @constructor
  */
 var Base = require('./Base.js');
@@ -155,6 +157,14 @@ var Collection = Class.create(Base, {
         this._updateLength();
         this.fireEvent('add',newData, this);
         return this;
+    },
+
+    get: function(id) {
+
+    },
+
+    at: function(id) {
+
     }
 });
 
@@ -190,8 +200,10 @@ module.exports = Collection;
  * @copyright 2015 Alexander Schenkel
  * @license Released under the MIT License
  * @class Protobone.Model
+ * @extends Protobone.Base
  * @constructor
  */
+var statics = require('./statics.js');
 var Base = require('./Base.js');
 var Model = Class.create(Base, {
     idAttribute: 'id',
@@ -426,7 +438,7 @@ var Model = Class.create(Base, {
      * @method sync
      */
     sync: function() {
-        return Protobone.sync.apply(Protobone,arguments);
+        return statics.sync.apply(statics,arguments);
     },
 
     /**
@@ -458,7 +470,7 @@ var Model = Class.create(Base, {
 // Adding support for JS Modules through browserify / ES 6:
 module.exports = Model;
 
-},{"./Base.js":1}],4:[function(require,module,exports){
+},{"./Base.js":1,"./statics.js":5}],4:[function(require,module,exports){
 var statics = require('./statics.js'),
     Model = require('./Model.js'),
     Collection = require('./Collection.js');
@@ -507,7 +519,7 @@ var mapMethods = function(method, emulateHTTP) {
 	return ((!!emulateHTTP) ? legacyMethods[method] : httpMethods[method]);
 };
 
-module.exports = {
+var statics = {
     /**
      * If set to true, only use GET (read) and POST (create,update,delete) HTTP
      * Methods, and set the X-HTTP-Method-Override request header with the
@@ -552,14 +564,14 @@ module.exports = {
      * @static
      */
     sync: function(url, method, model, options) {
-        var httpMethod = mapMethods(method, this.emulateHTTP),
+        var httpMethod = mapMethods(method, statics.emulateHTTP),
             ajaxOptions = {
                 method: httpMethod,
                 contentType: 'application/json',
                 postBody: Object.toJSON(model.get()),
                 requestHeaders: {}
             };
-        if (this.emulateHTTP) {
+        if (statics.emulateHTTP) {
             ajaxOptions.requestHeaders['X-HTTP-Method-Override'] = httpMethods[method];
         }
         options = options || {};
@@ -568,6 +580,8 @@ module.exports = {
         return new Ajax.Request(url, ajaxOptions);
     }
 };
+
+module.exports = statics;
 
 },{}]},{},[4])(4)
 });

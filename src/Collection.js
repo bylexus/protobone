@@ -10,6 +10,7 @@
  * @copyright 2015 Alexander Schenkel
  * @license Released under the MIT License
  * @class Protobone.Collection
+ * @extends Protobone.Base
  * @constructor
  */
 var Base = require('./Base.js');
@@ -68,6 +69,14 @@ var Collection = Class.create(Base, {
         this._updateLength();
         this.fireEvent('add',newData, this);
         return this;
+    },
+
+    get: function(id) {
+
+    },
+
+    at: function(id) {
+
     }
 });
 

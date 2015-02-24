@@ -35,7 +35,7 @@ var mapMethods = function(method, emulateHTTP) {
 	return ((!!emulateHTTP) ? legacyMethods[method] : httpMethods[method]);
 };
 
-module.exports = {
+var statics = {
     /**
      * If set to true, only use GET (read) and POST (create,update,delete) HTTP
      * Methods, and set the X-HTTP-Method-Override request header with the
@@ -80,14 +80,14 @@ module.exports = {
      * @static
      */
     sync: function(url, method, model, options) {
-        var httpMethod = mapMethods(method, this.emulateHTTP),
+        var httpMethod = mapMethods(method, statics.emulateHTTP),
             ajaxOptions = {
                 method: httpMethod,
                 contentType: 'application/json',
                 postBody: Object.toJSON(model.get()),
                 requestHeaders: {}
             };
-        if (this.emulateHTTP) {
+        if (statics.emulateHTTP) {
             ajaxOptions.requestHeaders['X-HTTP-Method-Override'] = httpMethods[method];
         }
         options = options || {};
@@ -96,3 +96,5 @@ module.exports = {
         return new Ajax.Request(url, ajaxOptions);
     }
 };
+
+module.exports = statics;

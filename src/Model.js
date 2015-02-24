@@ -26,8 +26,10 @@
  * @copyright 2015 Alexander Schenkel
  * @license Released under the MIT License
  * @class Protobone.Model
+ * @extends Protobone.Base
  * @constructor
  */
+var statics = require('./statics.js');
 var Base = require('./Base.js');
 var Model = Class.create(Base, {
     idAttribute: 'id',
@@ -262,7 +264,7 @@ var Model = Class.create(Base, {
      * @method sync
      */
     sync: function() {
-        return Protobone.sync.apply(Protobone,arguments);
+        return statics.sync.apply(statics,arguments);
     },
 
     /**

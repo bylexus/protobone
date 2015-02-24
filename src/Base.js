@@ -1,6 +1,7 @@
 /**
- * Base class for Protobone classes. Shared functions which are needed in all classed.
-
+ * Base class for Protobone classes. Shared functions which are needed in all classes. This class is not
+ * meant to be instantiated by itself.
+ *
  * @author Alexander Schenkel <alex@alexi.ch>
  * @copyright 2015 Alexander Schenkel
  * @license Released under the MIT License

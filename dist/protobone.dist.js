@@ -1,13 +1,177 @@
 !function(e){if("object"==typeof exports&&"undefined"!=typeof module)module.exports=e();else if("function"==typeof define&&define.amd)define([],e);else{var o;"undefined"!=typeof window?o=window:"undefined"!=typeof global?o=global:"undefined"!=typeof self&&(o=self),o.Protobone=e()}}(function(){var define,module,exports;return (function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);var f=new Error("Cannot find module '"+o+"'");throw f.code="MODULE_NOT_FOUND",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(require,module,exports){
-var statics = require('./statics.js'),
-    Model = require('./model/Model.js');
+/**
+ * Base class for Protobone classes. Shared functions which are needed in all classes. This class is not
+ * meant to be instantiated by itself.
+ *
+ * @author Alexander Schenkel <alex@alexi.ch>
+ * @copyright 2015 Alexander Schenkel
+ * @license Released under the MIT License
+ * @class Protobone.Base
+ * @constructor
+ */
+var Base = Class.create({
+    initialize: function() {
+        this._listeners = {};
+    },
 
-// Adding support for JS Modules (UMD Model) through browserify / ES 6:
-module.exports = Object.extend(statics, {
-    Model: Model
+    /**
+     * Registers an event handler.
+     * It does not check on duplicity, so you can add the same event
+     * handler multiple times.
+     *
+     * @method on
+     * @param {String} eventName The name of the event, e.g. 'updated'
+     * @param {Function} callback The listener function, called with event-specific {parameters}
+     * @param {boolean} this
+     */
+    on: function(eventName, callback) {
+        if (!this._listeners[eventName]) {
+            this._listeners[eventName] = [];
+        }
+        this._listeners[eventName].push(callback);
+        return this;
+    },
+
+    /**
+     * Removes a specific event handler for an event, or removes
+     * all listerners from an event.
+     *
+     * @method off
+     * @param {String} eventName E.g. 'updated'
+     * @param {Function} callback The callback to remove. If omitted, all callbacks
+     *   for a specific event are removed
+     * @param {Boolean} this
+     */
+    off: function(eventName, callback) {
+        var handlerArr,index;
+
+        if (!callback) {
+            // remove all handlers for an event:
+            this._listeners[eventName] = [];
+        } else {
+            // only remove specific hander:
+            handlerArr = this._listeners[eventName];
+            while (handlerArr && handlerArr.indexOf(callback) > -1) {
+                handlerArr.splice(handlerArr.indexOf(callback),1);
+            }
+        }
+        return this;
+    },
+
+    /**
+     * Fires an event, informing all listneners that are registered for
+     * the given event name. The fireEvent function can be called with
+     * any number of additional arguments, which are then passed to the event
+     * handler function.
+     *
+     * Returns true if NONE of the registered handlers return false: As soon as
+     * one listener returns false, fireEvent will also return false.
+     *
+     * @method fireEvent
+     * @param {String} eventName The event to fire, e.g. 'updated'
+     * @return {Boolean} true when non of the listeners returned false, false if they do so.
+     */
+    fireEvent: function(eventName) {
+        var args = $A(arguments).splice(1),
+            allTrue = true;
+        $A(this._listeners[eventName]).each(function(listener) {
+            if (listener instanceof Function) {
+                allTrue = allTrue && listener.apply(null,args) !== false;
+            }
+        }.bind(this));
+        return allTrue;
+    }
 });
 
-},{"./model/Model.js":2,"./statics.js":3}],2:[function(require,module,exports){
+module.exports = Base;
+
+},{}],2:[function(require,module,exports){
+/**
+ * PrototypeJS Model extension - Enables Prototype JS users to fetch / store
+ * Models from / to a backend using AJAX / REST.
+ * The Collection class stores Models and allows storing / fetching them in a batch.
+ *
+ * Inspired by (but not copied) [Backbone's Backbone.Collection](http://backbonejs.org/) and Backbone.sync
+ *
+ *
+ * @author Alexander Schenkel <alex@alexi.ch>
+ * @copyright 2015 Alexander Schenkel
+ * @license Released under the MIT License
+ * @class Protobone.Collection
+ * @extends Protobone.Base
+ * @constructor
+ */
+var Base = require('./Base.js');
+var Model = require('./Model.js');
+var Collection = Class.create(Base, {
+
+    /**
+     * The URL root for this Collection. Must be set in child classes,
+     * e.g. to '/entities/Person', or must be defined in the defined Model.
+     *
+     * Used by the url() function to build the persistence URL.
+     *
+     * @property urlRoot
+     * @type String
+     */
+    urlRoot: '',
+
+    model: Model,
+
+    /**
+     * Constructor. A data array can be delivered to create Models already during
+     * construction time (e.g. `[{name: 'alex'},{name: 'barbara'}]`)
+     *
+     * @method constructor
+     * @param {Array} data Initial data (array of key/value pairs) to create Model's from
+     */
+    initialize: function($super, data) {
+        $super();
+        this.models = [];
+        this.length = this.models.length;
+        this.add(data);
+    },
+
+    _updateLength: function() {
+        this.length = this.models.length;
+    },
+
+    /**
+     * The add method takes a Model or an array of Models and adds them to the
+     * internal collection. Plain objects can also be delivered, which will be
+     * transformed to Prototype.Model instances or, if set, to models of the `this.model` class.
+     *
+     * @method add
+     * @param {Array}{Object} data The array / object of model(s) to be added
+     */
+    add: function(data) {
+        var newData;
+
+        if (!Object.isArray(data)) data = [data];
+        newData = data.map(function(item) {
+            if (item instanceof Model) return item;
+            if (typeof item === 'object') return new this.model(item);
+            return null;
+        },this);
+        this.models = [this.models, newData].flatten().compact();
+        this._updateLength();
+        this.fireEvent('add',newData, this);
+        return this;
+    },
+
+    get: function(id) {
+
+    },
+
+    at: function(id) {
+
+    }
+});
+
+// Adding support for JS Modules through browserify / ES 6:
+module.exports = Collection;
+
+},{"./Base.js":1,"./Model.js":3}],3:[function(require,module,exports){
 /**
  * PrototypeJS Model extension - Enables Prototype JS users to fetch / store
  * Models from / to a backend using AJAX / REST
@@ -36,9 +200,12 @@ module.exports = Object.extend(statics, {
  * @copyright 2015 Alexander Schenkel
  * @license Released under the MIT License
  * @class Protobone.Model
+ * @extends Protobone.Base
  * @constructor
  */
-var Model = Class.create({
+var statics = require('./statics.js');
+var Base = require('./Base.js');
+var Model = Class.create(Base, {
     idAttribute: 'id',
 
     /**
@@ -58,10 +225,10 @@ var Model = Class.create({
      * @method constructor
      * @param {Object} data Initial data (key/value pairs) to set on the new Model instance, e.g.: `{name: 'Alex',age: 26}`
      */
-    initialize: function(data) {
+    initialize: function($super, data) {
+        $super();
         data = data || {};
         this._attributes = {};
-        this._listeners = {};
 
         /** TODO: Implement dirty attribute detection */
         this._dirtyAttributes = {};
@@ -271,7 +438,7 @@ var Model = Class.create({
      * @method sync
      */
     sync: function() {
-        return Protobone.sync.apply(Protobone,arguments);
+        return statics.sync.apply(statics,arguments);
     },
 
     /**
@@ -295,81 +462,26 @@ var Model = Class.create({
      */
     hasAttribute: function(key) {
         return Object.keys(this._attributes).indexOf(key) >= 0;
-    },
-
-    /**
-     * Registers an event handler.
-     * It does not check on duplicity, so you can add the same event
-     * handler multiple times.
-     *
-     * @method on
-     * @param {String} eventName The name of the event, e.g. 'updated'
-     * @param {Function} callback The listener function, called with event-specific {parameters}
-     * @param {boolean} this
-     */
-    on: function(eventName, callback) {
-        if (!this._listeners[eventName]) {
-            this._listeners[eventName] = [];
-        }
-        this._listeners[eventName].push(callback);
-        return this;
-    },
-
-    /**
-     * Removes a specific event handler for an event, or removes
-     * all listerners from an event.
-     *
-     * @method off
-     * @param {String} eventName E.g. 'updated'
-     * @param {Function} callback The callback to remove. If omitted, all callbacks
-     *   for a specific event are removed
-     * @param {Boolean} this
-     */
-    off: function(eventName, callback) {
-        var handlerArr,index;
-
-        if (!callback) {
-            // remove all handlers for an event:
-            this._listeners[eventName] = [];
-        } else {
-            // only remove specific hander:
-            handlerArr = this._listeners[eventName];
-            while (handlerArr && handlerArr.indexOf(callback) > -1) {
-                handlerArr.splice(handlerArr.indexOf(callback),1);
-            }
-        }
-        return this;
-    },
-
-    /**
-     * Fires an event, informing all listneners that are registered for
-     * the given event name. The fireEvent function can be called with
-     * any number of additional arguments, which are then passed to the event
-     * handler function.
-     *
-     * Returns true if NONE of the registered handlers return false: As soon as
-     * one listener returns false, fireEvent will also return false.
-     *
-     * @method fireEvent
-     * @param {String} eventName The event to fire, e.g. 'updated'
-     * @return {Boolean} true when non of the listeners returned false, false if they do so.
-     */
-    fireEvent: function(eventName) {
-        var args = $A(arguments).splice(1),
-            allTrue = true;
-        $A(this._listeners[eventName]).each(function(listener) {
-            if (listener instanceof Function) {
-                allTrue = allTrue && listener.apply(null,args) !== false;
-            }
-        }.bind(this));
-        return allTrue;
     }
+
+
 });
 
 // Adding support for JS Modules through browserify / ES 6:
 module.exports = Model;
 
-},{}],3:[function(require,module,exports){
+},{"./Base.js":1,"./statics.js":5}],4:[function(require,module,exports){
+var statics = require('./statics.js'),
+    Model = require('./Model.js'),
+    Collection = require('./Collection.js');
+
+// Adding support for JS Modules (UMD Model) through browserify / ES 6:
+module.exports = Object.extend(statics, {
+    Model: Model,
+    Collection: Collection
+});
+
+},{"./Collection.js":2,"./Model.js":3,"./statics.js":5}],5:[function(require,module,exports){
 /**
  * PrototypeJS Model extension - Enables Prototype JS users to fetch / store
  * Models from / to a backend using AJAX / REST
@@ -407,7 +519,7 @@ var mapMethods = function(method, emulateHTTP) {
 	return ((!!emulateHTTP) ? legacyMethods[method] : httpMethods[method]);
 };
 
-module.exports = {
+var statics = {
     /**
      * If set to true, only use GET (read) and POST (create,update,delete) HTTP
      * Methods, and set the X-HTTP-Method-Override request header with the
@@ -452,14 +564,14 @@ module.exports = {
      * @static
      */
     sync: function(url, method, model, options) {
-        var httpMethod = mapMethods(method, this.emulateHTTP),
+        var httpMethod = mapMethods(method, statics.emulateHTTP),
             ajaxOptions = {
                 method: httpMethod,
                 contentType: 'application/json',
                 postBody: Object.toJSON(model.get()),
                 requestHeaders: {}
             };
-        if (this.emulateHTTP) {
+        if (statics.emulateHTTP) {
             ajaxOptions.requestHeaders['X-HTTP-Method-Override'] = httpMethods[method];
         }
         options = options || {};
@@ -469,5 +581,7 @@ module.exports = {
     }
 };
 
-},{}]},{},[1])(1)
+module.exports = statics;
+
+},{}]},{},[4])(4)
 });
