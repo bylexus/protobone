@@ -53,7 +53,7 @@
             "extension_for": [],
             "file": "src/Base.js",
             "line": 1,
-            "description": "Base class for Protobone classes. Shared functions which are needed in all classed.",
+            "description": "Base class for Protobone classes. Shared functions which are needed in all classes. This class is not\nmeant to be instantiated by itself.",
             "author": "Alexander Schenkel <alex@alexi.ch>",
             "copyright": "2015 Alexander Schenkel",
             "license": "Released under the MIT License",
@@ -104,7 +104,7 @@
     "classitems": [
         {
             "file": "src/Base.js",
-            "line": 15,
+            "line": 16,
             "description": "Registers an event handler.\nIt does not check on duplicity, so you can add the same event\nhandler multiple times.",
             "itemtype": "method",
             "name": "on",
@@ -129,7 +129,7 @@
         },
         {
             "file": "src/Base.js",
-            "line": 33,
+            "line": 34,
             "description": "Removes a specific event handler for an event, or removes\nall listerners from an event.",
             "itemtype": "method",
             "name": "off",
@@ -154,7 +154,7 @@
         },
         {
             "file": "src/Base.js",
-            "line": 59,
+            "line": 60,
             "description": "Fires an event, informing all listneners that are registered for\nthe given event name. The fireEvent function can be called with\nany number of additional arguments, which are then passed to the event\nhandler function.\n\nReturns true if NONE of the registered handlers return false: As soon as\none listener returns false, fireEvent will also return false.",
             "itemtype": "method",
             "name": "fireEvent",
@@ -213,6 +213,14 @@
         {
             "file": "src/Model.js",
             "line": 36,
+            "description": "Defines the name of the ID attribute. Defaults to `id`.",
+            "itemtype": "property",
+            "name": "id",
+            "class": "Protobone.Model"
+        },
+        {
+            "file": "src/Model.js",
+            "line": 43,
             "description": "The URL root for this Model. Must be set in child classes,\ne.g. to '/entities/Person'.\nUsed by the url() function to build the persistence URL.",
             "itemtype": "property",
             "name": "urlRoot",
@@ -221,7 +229,15 @@
         },
         {
             "file": "src/Model.js",
-            "line": 46,
+            "line": 53,
+            "description": "Used by the parse() function, it defines the root property\nin the server's json response which contains the\npayload data for the model. Defaults to null (delivered json\ndirectly contains model attributes)",
+            "itemtype": "property",
+            "name": "rootProperty",
+            "class": "Protobone.Model"
+        },
+        {
+            "file": "src/Model.js",
+            "line": 63,
             "description": "Constructor. Sets the given data (key/value pairs)\nas attributes on new model instances.",
             "itemtype": "method",
             "name": "constructor",
@@ -236,12 +252,12 @@
         },
         {
             "file": "src/Model.js",
-            "line": 58,
+            "line": 75,
             "class": "Protobone.Model"
         },
         {
             "file": "src/Model.js",
-            "line": 64,
+            "line": 81,
             "description": "Returns the instance's ID of the model. Null means it is a new, not saved\ninstance.",
             "itemtype": "method",
             "name": "getId",
@@ -253,7 +269,7 @@
         },
         {
             "file": "src/Model.js",
-            "line": 75,
+            "line": 92,
             "description": "Sets the Model instance's ID. It also sets it as attribute\nvalue so that it is sent to the server when synced.",
             "itemtype": "method",
             "name": "setId",
@@ -272,7 +288,7 @@
         },
         {
             "file": "src/Model.js",
-            "line": 89,
+            "line": 106,
             "description": "Sets Model attributes (key/values). Takes either a key and a value,\nor a plain object containing key/value pairs.",
             "itemtype": "method",
             "name": "set",
@@ -296,7 +312,7 @@
         },
         {
             "file": "src/Model.js",
-            "line": 113,
+            "line": 130,
             "description": "Sets a single Model attribute (e.g. 'name' to 'Alex'). Internal helper function.\nPlease use set() instead.",
             "params": [
                 {
@@ -318,7 +334,7 @@
         },
         {
             "file": "src/Model.js",
-            "line": 137,
+            "line": 154,
             "description": "Returns a specific attribute, or all if key is omitted",
             "itemtype": "method",
             "name": "get",
@@ -337,7 +353,7 @@
         },
         {
             "file": "src/Model.js",
-            "line": 156,
+            "line": 173,
             "description": "Creates the REST url for the actual state of the Model. Override this\nmethod if you want to implement your own URL scheme. Here is how it works\nby default:\n\n- non-persistent state (id = null): return '<urlRoot>'\n- persistent state (id <> null): return '<urlRoot>/<id>'",
             "itemtype": "method",
             "name": "url",
@@ -349,7 +365,7 @@
         },
         {
             "file": "src/Model.js",
-            "line": 177,
+            "line": 194,
             "description": "Makes this model persistent by sending the data to a REST interface (by default).\nMake sure to set the urlRool property on class definition.\n\noptions are all options that Prototype's Ajax.Request understands, so you\ncan e.g. deliver a onSuccess callback:\n\n```javascript\nmyModel.save({onSuccess: function(response,model){\n    // do something after save here\n}});\n```",
             "itemtype": "method",
             "name": "save",
@@ -364,7 +380,7 @@
         },
         {
             "file": "src/Model.js",
-            "line": 200,
+            "line": 217,
             "description": "Fetches this Model's representation from the server. Only\nallowed for existing (id <> null) models. options is passed\nalong to Prototype's Ajax.Request function.",
             "itemtype": "method",
             "name": "fetch",
@@ -379,7 +395,7 @@
         },
         {
             "file": "src/Model.js",
-            "line": 217,
+            "line": 234,
             "description": "invokes a delete request to the server.  Only\nallowed for existing (id <> null) models. options is passed\nalong to Prototype's Ajax.Request function.\n\nAfter the deletion was successful, the model instance is updated with the\nserver data, even if the server removed the instance.",
             "itemtype": "method",
             "name": "destroy",
@@ -394,13 +410,13 @@
         },
         {
             "file": "src/Model.js",
-            "line": 237,
+            "line": 254,
             "description": "internal helper function for initiating the requests for save, fetch, destroy",
             "class": "Protobone.Model"
         },
         {
             "file": "src/Model.js",
-            "line": 258,
+            "line": 275,
             "description": "Just calls Protobone.Model.sync. If you want your own, Model-specific implementation,\noverride this function.",
             "see": [
                 "Protobone.Model.sync. Also here: inspired by http://backbonejs.org/#Sync"
@@ -411,13 +427,15 @@
         },
         {
             "file": "src/Model.js",
-            "line": 269,
-            "description": "Called by save() and fetch() with the server's data response. Fills in the\nserver response to the model. In the default implementation, it just\ntakes the plain JSON object from the server (if any) and store the values on the model.",
+            "line": 286,
+            "description": "Called by save() and fetch() with the server's data response. Fills in the\nserver response to the model. In the default implementation, it just\ntakes the plain JSON object from the server (if any) and store the values on the model.\nif `rootProperty`is set, the data entry point is set to the rootProperty data.",
+            "itemtype": "method",
+            "name": "parse",
             "class": "Protobone.Model"
         },
         {
             "file": "src/Model.js",
-            "line": 281,
+            "line": 304,
             "description": "Checks if the model has a certain attribute.",
             "itemtype": "method",
             "name": "hasAttribute",
@@ -519,19 +537,15 @@
         },
         {
             "message": "Missing item type",
-            "line": " src/Model.js:58"
+            "line": " src/Model.js:75"
         },
         {
             "message": "Missing item type\nSets a single Model attribute (e.g. 'name' to 'Alex'). Internal helper function.\nPlease use set() instead.",
-            "line": " src/Model.js:113"
+            "line": " src/Model.js:130"
         },
         {
             "message": "Missing item type\ninternal helper function for initiating the requests for save, fetch, destroy",
-            "line": " src/Model.js:237"
-        },
-        {
-            "message": "Missing item type\nCalled by save() and fetch() with the server's data response. Fills in the\nserver response to the model. In the default implementation, it just\ntakes the plain JSON object from the server (if any) and store the values on the model.",
-            "line": " src/Model.js:269"
+            "line": " src/Model.js:254"
         }
     ]
 }

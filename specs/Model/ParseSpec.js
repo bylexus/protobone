@@ -20,5 +20,24 @@ describe("Protobone.Model", function() {
 				id:5,name:'test',active: true
 			});
 		});
+
+        it("parses the response correctly and sets the data if rootProperty is present", function(){
+            var m = new Protobone.Model();
+            m.rootProperty = 'record';
+            var response = {
+                responseJSON: {
+                    record: {
+                        id: 5,
+                        name: 'test',
+                        active: true
+                    }
+                }
+            };
+            m.parse(response);
+            expect(m.getId()).toEqual(5);
+            expect(m.get()).toEqual({
+                id:5,name:'test',active: true
+            });
+        });
 	});
 });
