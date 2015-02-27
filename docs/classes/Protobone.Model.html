@@ -16,7 +16,7 @@
             <h1><a href="../index.html"><img src="../assets/css/logo.png" width="117" height="52">protobone: Protobone.Model</a></h1>
         </div>
         <div class="yui3-u-1-4 version">
-            <em>API Docs for: 0.0.2</em>
+            <em>API Docs for: 0.0.4</em>
         </div>
     </div>
     <div class="yui3-g">
@@ -58,6 +58,7 @@
                             <li><a href="#methods_hasAttribute">hasAttribute</a></li>
                             <li><a href="#methods_off">off</a></li>
                             <li><a href="#methods_on">on</a></li>
+                            <li><a href="#methods_parse">parse</a></li>
                             <li><a href="#methods_save">save</a></li>
                             <li><a href="#methods_set">set</a></li>
                             <li><a href="#methods_setId">setId</a></li>
@@ -114,7 +115,7 @@ Models from / to a backend using AJAX / REST</p>
     <br>
     <span class="foundat">
         
-        <a href="../files/src_model_Model.js.html#l44"><code>src&#x2F;model&#x2F;Model.js:44</code></a>
+        <a href="../files/src_model_Model.js.html#l61"><code>src&#x2F;model&#x2F;Model.js:61</code></a>
     </span><br>
     <p>Constructor. Sets the given data (key/value pairs)
 as attributes on new model instances.</p>
@@ -134,7 +135,7 @@ as attributes on new model instances.</p>
     <br>
     <span class="foundat">
         
-        <a href="../files/src_model_Model.js.html#l216"><code>src&#x2F;model&#x2F;Model.js:216</code></a>
+        <a href="../files/src_model_Model.js.html#l232"><code>src&#x2F;model&#x2F;Model.js:232</code></a>
     </span><br>
     <p>invokes a delete request to the server.  Only
 allowed for existing (id &lt;&gt; null) models. options is passed
@@ -157,7 +158,7 @@ server data, even if the server removed the instance.</p>
     <br>
     <span class="foundat">
         
-        <a href="../files/src_model_Model.js.html#l199"><code>src&#x2F;model&#x2F;Model.js:199</code></a>
+        <a href="../files/src_model_Model.js.html#l215"><code>src&#x2F;model&#x2F;Model.js:215</code></a>
     </span><br>
     <p>Fetches this Model&#39;s representation from the server. Only
 allowed for existing (id &lt;&gt; null) models. options is passed
@@ -178,7 +179,7 @@ along to Prototype&#39;s Ajax.Request function.</p>
     <br>
     <span class="foundat">
         
-        <a href="../files/src_model_Model.js.html#l335"><code>src&#x2F;model&#x2F;Model.js:335</code></a>
+        <a href="../files/src_model_Model.js.html#l357"><code>src&#x2F;model&#x2F;Model.js:357</code></a>
     </span><br>
     <p>Fires an event, informing all listneners that are registered for
 the given event name. The fireEvent function can be called with
@@ -204,7 +205,7 @@ one listener returns false, fireEvent will also return false.</p>
     <br>
     <span class="foundat">
         
-        <a href="../files/src_model_Model.js.html#l136"><code>src&#x2F;model&#x2F;Model.js:136</code></a>
+        <a href="../files/src_model_Model.js.html#l152"><code>src&#x2F;model&#x2F;Model.js:152</code></a>
     </span><br>
     <p>Returns a specific attribute, or all if key is omitted</p>
 
@@ -226,7 +227,7 @@ one listener returns false, fireEvent will also return false.</p>
     <br>
     <span class="foundat">
         
-        <a href="../files/src_model_Model.js.html#l62"><code>src&#x2F;model&#x2F;Model.js:62</code></a>
+        <a href="../files/src_model_Model.js.html#l79"><code>src&#x2F;model&#x2F;Model.js:79</code></a>
     </span><br>
     <p>Returns the instance&#39;s ID of the model. Null means it is a new, not saved
 instance.</p>
@@ -240,7 +241,7 @@ instance.</p>
     <br>
     <span class="foundat">
         
-        <a href="../files/src_model_Model.js.html#l280"><code>src&#x2F;model&#x2F;Model.js:280</code></a>
+        <a href="../files/src_model_Model.js.html#l302"><code>src&#x2F;model&#x2F;Model.js:302</code></a>
     </span><br>
     <p>Checks if the model has a certain attribute.</p>
 
@@ -260,7 +261,7 @@ instance.</p>
     <br>
     <span class="foundat">
         
-        <a href="../files/src_model_Model.js.html#l309"><code>src&#x2F;model&#x2F;Model.js:309</code></a>
+        <a href="../files/src_model_Model.js.html#l331"><code>src&#x2F;model&#x2F;Model.js:331</code></a>
     </span><br>
     <p>Removes a specific event handler for an event, or removes
 all listerners from an event.</p>
@@ -290,7 +291,7 @@ all listerners from an event.</p>
     <br>
     <span class="foundat">
         
-        <a href="../files/src_model_Model.js.html#l291"><code>src&#x2F;model&#x2F;Model.js:291</code></a>
+        <a href="../files/src_model_Model.js.html#l313"><code>src&#x2F;model&#x2F;Model.js:313</code></a>
     </span><br>
     <p>Registers an event handler.
 It does not check on duplicity, so you can add the same event
@@ -314,13 +315,27 @@ handler multiple times.</p>
         </li>
     </ul>
 </div>
+<a name="methods_parse"></a>
+<div class="method item">
+     <strong class="name"><code>parse</code></strong>( <code>  </code> ) 
+    <br>
+    <span class="foundat">
+        
+        <a href="../files/src_model_Model.js.html#l284"><code>src&#x2F;model&#x2F;Model.js:284</code></a>
+    </span><br>
+    <p>Called by save() and fetch() with the server&#39;s data response. Fills in the
+server response to the model. In the default implementation, it just
+takes the plain JSON object from the server (if any) and store the values on the model.
+if <code>rootProperty</code>is set, the data entry point is set to the rootProperty data.</p>
+
+</div>
 <a name="methods_save"></a>
 <div class="method item">
      <strong class="name"><code>save</code></strong>( <code>options </code> ) 
     <br>
     <span class="foundat">
         
-        <a href="../files/src_model_Model.js.html#l176"><code>src&#x2F;model&#x2F;Model.js:176</code></a>
+        <a href="../files/src_model_Model.js.html#l192"><code>src&#x2F;model&#x2F;Model.js:192</code></a>
     </span><br>
     <p>Makes this model persistent by sending the data to a REST interface (by default).
 Make sure to set the urlRool property on class definition.</p>
@@ -346,7 +361,7 @@ can e.g. deliver a onSuccess callback:</p>
     <br>
     <span class="foundat">
         
-        <a href="../files/src_model_Model.js.html#l87"><code>src&#x2F;model&#x2F;Model.js:87</code></a>
+        <a href="../files/src_model_Model.js.html#l104"><code>src&#x2F;model&#x2F;Model.js:104</code></a>
     </span><br>
     <p>Sets Model attributes (key/values). Takes either a key and a value,
 or a plain object containing key/value pairs.</p>
@@ -374,7 +389,7 @@ or a plain object containing key/value pairs.</p>
     <br>
     <span class="foundat">
         
-        <a href="../files/src_model_Model.js.html#l73"><code>src&#x2F;model&#x2F;Model.js:73</code></a>
+        <a href="../files/src_model_Model.js.html#l90"><code>src&#x2F;model&#x2F;Model.js:90</code></a>
     </span><br>
     <p>Sets the Model instance&#39;s ID. It also sets it as attribute
 value so that it is sent to the server when synced.</p>
@@ -441,7 +456,7 @@ or an incompatible API.</p>
     <br>
     <span class="foundat">
         
-        <a href="../files/src_model_Model.js.html#l257"><code>src&#x2F;model&#x2F;Model.js:257</code></a>
+        <a href="../files/src_model_Model.js.html#l273"><code>src&#x2F;model&#x2F;Model.js:273</code></a>
     </span><br>
     <p>Just calls Protobone.Model.sync. If you want your own, Model-specific implementation,
 override this function.</p>
@@ -453,7 +468,7 @@ override this function.</p>
     <br>
     <span class="foundat">
         
-        <a href="../files/src_model_Model.js.html#l155"><code>src&#x2F;model&#x2F;Model.js:155</code></a>
+        <a href="../files/src_model_Model.js.html#l171"><code>src&#x2F;model&#x2F;Model.js:171</code></a>
     </span><br>
     <p>Creates the REST url for the actual state of the Model. Override this
 method if you want to implement your own URL scheme. Here is how it works
@@ -487,10 +502,27 @@ by default:</p>
                     <p>TODO: Implement emulateJSON to use a post body instead of RAW json</p>
                 
                 </div>
+                <a name="props_id"></a>
+                <div class="props item">
+                    <code>id</code> &lt;<strong>Unknown</strong>&gt;<br>
+                    <span class="foundat"><a href="../files/src_model_Model.js.html#l34"><code>src&#x2F;model&#x2F;Model.js:34</code></a></span>
+                    <p>Defines the name of the ID attribute. Defaults to <code>id</code>.</p>
+                
+                </div>
+                <a name="props_rootProperty"></a>
+                <div class="props item">
+                    <code>rootProperty</code> &lt;<strong>Unknown</strong>&gt;<br>
+                    <span class="foundat"><a href="../files/src_model_Model.js.html#l51"><code>src&#x2F;model&#x2F;Model.js:51</code></a></span>
+                    <p>Used by the parse() function, it defines the root property
+                in the server&#39;s json response which contains the
+                payload data for the model. Defaults to null (delivered json
+                directly contains model attributes)</p>
+                
+                </div>
                 <a name="props_urlRoot"></a>
                 <div class="props item">
                     <code>urlRoot</code> &lt;<strong><a href="https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/String" class="crosslink external" target="_blank">String</a></strong>&gt;<br>
-                    <span class="foundat"><a href="../files/src_model_Model.js.html#l34"><code>src&#x2F;model&#x2F;Model.js:34</code></a></span>
+                    <span class="foundat"><a href="../files/src_model_Model.js.html#l41"><code>src&#x2F;model&#x2F;Model.js:41</code></a></span>
                     <p>The URL root for this Model. Must be set in child classes,
                 e.g. to &#39;/entities/Person&#39;.
                 Used by the url() function to build the persistence URL.</p>

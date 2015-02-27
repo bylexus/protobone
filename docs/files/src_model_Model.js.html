@@ -16,7 +16,7 @@
             <h1><a href="../index.html"><img src="../assets/css/logo.png" width="117" height="52">protobone: src/model/Model.js</a></h1>
         </div>
         <div class="yui3-u-1-4 version">
-            <em>API Docs for: 0.0.2</em>
+            <em>API Docs for: 0.0.4</em>
         </div>
     </div>
     <div class="yui3-g">
@@ -92,7 +92,14 @@
  * @class Protobone.Model
  * @constructor
  */
+var statics = require(&#x27;../statics.js&#x27;);
 var Model = Class.create({
+
+    /**
+     * Defines the name of the ID attribute. Defaults to &#x60;id&#x60;.
+     *
+     * @property id
+     */
     idAttribute: &#x27;id&#x27;,
 
     /**
@@ -104,6 +111,16 @@ var Model = Class.create({
      * @type String
      */
     urlRoot: &#x27;&#x27;,
+
+    /**
+     * Used by the parse() function, it defines the root property
+     * in the server&#x27;s json response which contains the
+     * payload data for the model. Defaults to null (delivered json
+     * directly contains model attributes)
+     *
+     * @property rootProperty
+     */
+    rootProperty: null,
 
     /**
      * Constructor. Sets the given data (key/value pairs)
@@ -159,18 +176,17 @@ var Model = Class.create({
      * @return {this} Supports fluent interface by returning itself
      */
     set: function(keyOrObject, value) {
-        var ret,
-            oldValues = {},
+        var oldValues = {},
             newValues = {};
         if (keyOrObject instanceof Object) {
             $H(keyOrObject).each(function(item) {
-                ret = this.set(item.key, item.value);
+                this.set(item.key, item.value);
             }, this);
         } else {
-            ret = this._setAttribute(keyOrObject, value,newValues,oldValues);
+            this._setAttribute(keyOrObject, value,newValues,oldValues);
             this.fireEvent(&#x27;updated&#x27;,this,newValues,oldValues);
         }
-        return ret;
+        return this;
     },
 
     /**
@@ -326,18 +342,24 @@ var Model = Class.create({
      * @method sync
      */
     sync: function() {
-        return Protobone.sync.apply(Protobone,arguments);
+        return statics.sync.apply(statics,arguments);
     },
 
     /**
      * Called by save() and fetch() with the server&#x27;s data response. Fills in the
      * server response to the model. In the default implementation, it just
      * takes the plain JSON object from the server (if any) and store the values on the model.
+     * if &#x60;rootProperty&#x60;is set, the data entry point is set to the rootProperty data.
      *
+     * @method parse
      */
     parse: function(response) {
         if (response &amp;&amp; response.responseJSON) {
-            this.set(response.responseJSON);
+            if (this.rootProperty &amp;&amp; response.responseJSON[this.rootProperty]) {
+                this.set(response.responseJSON[this.rootProperty]);
+            } else {
+                this.set(response.responseJSON);
+            }
         }
     },
 

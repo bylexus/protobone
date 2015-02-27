@@ -40,6 +40,12 @@ module.exports = Object.extend(statics, {
  */
 var statics = require('../statics.js');
 var Model = Class.create({
+
+    /**
+     * Defines the name of the ID attribute. Defaults to `id`.
+     *
+     * @property id
+     */
     idAttribute: 'id',
 
     /**
@@ -51,6 +57,16 @@ var Model = Class.create({
      * @type String
      */
     urlRoot: '',
+
+    /**
+     * Used by the parse() function, it defines the root property
+     * in the server's json response which contains the
+     * payload data for the model. Defaults to null (delivered json
+     * directly contains model attributes)
+     *
+     * @property rootProperty
+     */
+    rootProperty: null,
 
     /**
      * Constructor. Sets the given data (key/value pairs)
@@ -279,11 +295,17 @@ var Model = Class.create({
      * Called by save() and fetch() with the server's data response. Fills in the
      * server response to the model. In the default implementation, it just
      * takes the plain JSON object from the server (if any) and store the values on the model.
+     * if `rootProperty`is set, the data entry point is set to the rootProperty data.
      *
+     * @method parse
      */
     parse: function(response) {
         if (response && response.responseJSON) {
-            this.set(response.responseJSON);
+            if (this.rootProperty && response.responseJSON[this.rootProperty]) {
+                this.set(response.responseJSON[this.rootProperty]);
+            } else {
+                this.set(response.responseJSON);
+            }
         }
     },
 

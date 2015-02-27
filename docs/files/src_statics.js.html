@@ -16,7 +16,7 @@
             <h1><a href="../index.html"><img src="../assets/css/logo.png" width="117" height="52">protobone: src/statics.js</a></h1>
         </div>
         <div class="yui3-u-1-4 version">
-            <em>API Docs for: 0.0.2</em>
+            <em>API Docs for: 0.0.4</em>
         </div>
     </div>
     <div class="yui3-g">
@@ -82,24 +82,24 @@
 
 // Private stuff
 var httpMethods = {
-	&#x27;create&#x27;: &#x27;post&#x27;,
-	&#x27;read&#x27;  : &#x27;get&#x27;,
-	&#x27;update&#x27;: &#x27;put&#x27;,
-	&#x27;delete&#x27;: &#x27;delete&#x27;
-	// TODO: implement PATCH for non-full updates
+    &#x27;create&#x27;: &#x27;post&#x27;,
+    &#x27;read&#x27;  : &#x27;get&#x27;,
+    &#x27;update&#x27;: &#x27;put&#x27;,
+    &#x27;delete&#x27;: &#x27;delete&#x27;
+    // TODO: implement PATCH for non-full updates
 };
 var legacyMethods = {
-	&#x27;create&#x27;: &#x27;post&#x27;,
-	&#x27;read&#x27;  : &#x27;get&#x27;,
-	&#x27;update&#x27;: &#x27;post&#x27;,
-	&#x27;delete&#x27;: &#x27;post&#x27;
+    &#x27;create&#x27;: &#x27;post&#x27;,
+    &#x27;read&#x27;  : &#x27;get&#x27;,
+    &#x27;update&#x27;: &#x27;post&#x27;,
+    &#x27;delete&#x27;: &#x27;post&#x27;
 };
 
 var mapMethods = function(method, emulateHTTP) {
-	return ((!!emulateHTTP) ? legacyMethods[method] : httpMethods[method]);
+    return ((!!emulateHTTP) ? legacyMethods[method] : httpMethods[method]);
 };
 
-module.exports = {
+var statics = {
     /**
      * If set to true, only use GET (read) and POST (create,update,delete) HTTP
      * Methods, and set the X-HTTP-Method-Override request header with the
@@ -144,14 +144,14 @@ module.exports = {
      * @static
      */
     sync: function(url, method, model, options) {
-        var httpMethod = mapMethods(method, this.emulateHTTP),
+        var httpMethod = mapMethods(method, statics.emulateHTTP),
             ajaxOptions = {
                 method: httpMethod,
                 contentType: &#x27;application/json&#x27;,
                 postBody: Object.toJSON(model.get()),
                 requestHeaders: {}
             };
-        if (this.emulateHTTP) {
+        if (statics.emulateHTTP) {
             ajaxOptions.requestHeaders[&#x27;X-HTTP-Method-Override&#x27;] = httpMethods[method];
         }
         options = options || {};
@@ -160,6 +160,8 @@ module.exports = {
         return new Ajax.Request(url, ajaxOptions);
     }
 };
+
+module.exports = statics;
 
 </pre>
 
