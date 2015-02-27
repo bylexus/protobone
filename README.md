@@ -143,6 +143,8 @@ grunt doc
 
 Changelog
 ---------
+* 0.0.6: introducing 'rootProperty' on Model to support different server response formats
+* 0.0.5: fixing an AMD require dependency bug
 * 0.0.4: removed underscore dependency, switched all underscore code to prototype code
 * 0.0.3: Changed Name and Namespace from "Prototype.Model" to "Protobone" to make the Library independant from the Prototype namespace and for better UMD integration
 * 0.0.2: Switched build process do browserify to support UMD Modules and prepare for ES6
