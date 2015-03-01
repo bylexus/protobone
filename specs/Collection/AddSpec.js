@@ -113,7 +113,7 @@ describe("Protobone.Collection", function() {
         it("just should call add(), as alias function", function() {
             var c = new Protobone.Collection();
             spyOn(c,'add').and.callThrough();
-            res = c.add({'a':3});
+            res = c.push({'a':3});
             expect(c.add).toHaveBeenCalledWith({a:3});
             expect(c.add.calls.count()).toEqual(1);
             expect(res).toEqual(c);
