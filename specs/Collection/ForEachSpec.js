@@ -33,5 +33,22 @@ describe("Protobone.Collection", function() {
             expect(cb.calls.all()[4].object).toEqual(cb);
             expect(cb.calls.all()[5].object).toEqual(cb);
         });
+
+        it("stops looping when callback returns false", function(){
+            var m1 = new Protobone.Model({id: 1,a:'alex'});
+            var m2 = new Protobone.Model({id: 2,a:'alex'});
+            var m3 = new Protobone.Model({id: 3,a:'barbara'});
+            var c = new Protobone.Collection();
+            var foo = {
+                cb: function(item) {
+                    if (item.getId() === 1) return false;
+                }
+            };
+            spyOn(foo,'cb').and.callThrough();
+
+            c.add([m2,m1,m3]);
+            c.forEach(foo.cb);
+            expect(foo.cb.calls.count()).toEqual(2);
+        });
     });
 });
