@@ -27,6 +27,19 @@ describe("Protobone.Model", function() {
 			var ret = m.set();
 			expect(ret).toEqual(m);
 		});
+
+        it("fires the updated event when setting date (once per set call)", function() {
+            var m = new Protobone.Model();
+            m.on('updated',function() {});
+            spyOn(m,'fireEvent');
+            m.set('a','b');
+            expect(m.fireEvent).toHaveBeenCalledWith('updated',m,{a:'b'},{a:undefined});
+            expect(m.fireEvent.calls.count()).toEqual(1);
+
+            m.set({a: 'a',b:'b',c:'c'});
+            expect(m.fireEvent).toHaveBeenCalledWith('updated',m,{a: 'a',b:'b',c:'c'},{a:'b',b:undefined,c:undefined});
+            expect(m.fireEvent.calls.count()).toEqual(2);
+        });
 	});
 
 	describe("#_setAttribute", function() {

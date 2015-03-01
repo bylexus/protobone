@@ -116,6 +116,12 @@ var Collection = Class.create(Base, {
      */
     urlRoot: '',
 
+    /**
+     * Defines the model class used when adding models via attribute array.
+     *
+     * @property model
+     * @type {Class}
+     */
     model: Model,
 
     /**
@@ -149,9 +155,16 @@ var Collection = Class.create(Base, {
 
         if (!Object.isArray(data)) data = [data];
         newData = data.map(function(item) {
-            if (item instanceof Model) return item;
-            if (typeof item === 'object') return new this.model(item);
-            return null;
+            var m = null;
+            if (item instanceof Model) {
+                m = item;
+            } else if (typeof item === 'object') {
+                m = new this.model(item);
+            }
+            if (m) {
+                m.on('updated', this._bubbleUpdatedEvent.bind(this));
+            }
+            return m;
         },this);
         this.models = [this.models, newData].flatten().compact();
         this._updateLength();
@@ -159,12 +172,63 @@ var Collection = Class.create(Base, {
         return this;
     },
 
+    /**
+     * Returns the model by specific ID
+     *
+     * @method get
+     * @param {mixed} id The ID of the model
+     * @return {Model} The model if found, or null
+     */
     get: function(id) {
+        var m = new this.model();
+        return this.findBy(m.idAttribute,id);
+    },
+
+    /**
+     * Find a model by a specific attribute value.
+     *
+     * @method findBy
+     * @param {String} attribute The name of the attribute
+     * @param {Mixed} value The value of the attribute
+     * @param {Model} Returns the first model with a matching attribute value, or null if none can be found
+     */
+    findBy: function(attribute,value) {
+        var found = null;
+        this.forEach(function(item) {
+            if (item.get(attribute) === value) {
+                found = item;
+                return false;
+            }
+        });
+        return found;
+    },
+
+    push: function(model) {
 
     },
 
     at: function(id) {
 
+    },
+
+    /**
+     * loops over all models and calls the given callback with `callback(model,index)`.
+     * Return false within the callback to cancel the loop.
+     *
+     * @method forEach
+     * @param {Function} callback The callback for every item to be called. Return false to cancel the loop
+     * @param
+     */
+    forEach: function(callback, scope) {
+        var i,ret;
+        for (i = 0; i < this.models.length; i++) {
+            ret = callback.call(scope,this.models[i],i);
+            if (ret === false) break;
+        }
+    },
+
+    _bubbleUpdatedEvent: function() {
+        this.fireEvent.apply(this,['updated',$A(arguments)].flatten());
     }
 });
 
@@ -289,15 +353,18 @@ var Model = Class.create(Base, {
      */
     set: function(keyOrObject, value) {
         var oldValues = {},
-            newValues = {};
-        if (keyOrObject instanceof Object) {
-            $H(keyOrObject).each(function(item) {
-                this.set(item.key, item.value);
-            }, this);
-        } else {
-            this._setAttribute(keyOrObject, value,newValues,oldValues);
-            this.fireEvent('updated',this,newValues,oldValues);
+            newValues = {},
+            obj = {};
+        if (typeof keyOrObject === 'string') {
+            obj[keyOrObject] = value;
+        } else if (typeof keyOrObject === 'object') {
+            obj = keyOrObject;
         }
+
+        $H(obj).each(function(pair) {
+            this._setAttribute(pair.key, pair.value,newValues,oldValues);
+        }.bind(this));
+        this.fireEvent('updated',this,newValues,oldValues);
         return this;
     },
 
@@ -312,7 +379,7 @@ var Model = Class.create(Base, {
     _setAttribute: function(key, value,newVals, oldVals) {
         if (typeof key === 'string') {
             if (this._attributes[key] !== value) {
-                if (oldVals) oldVals[key] = this._dirtyAttributes[key];
+                if (oldVals) oldVals[key] = this._attributes[key];
                 if (newVals) newVals[key] = value;
                 this._dirtyAttributes[key] = value;
             }

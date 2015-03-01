@@ -100,5 +100,12 @@ describe("Protobone.Collection", function() {
             expect(addFn.calls.argsFor(1)[0][2]).toEqual(jasmine.any(Protobone.Model));
             expect(addFn.calls.argsFor(1)[1]).toEqual(c);
         });
+
+        it("updates its 'length' property if new models are added", function() {
+            var c = new Protobone.Collection();
+            expect(c.length).toEqual(0);
+            c.add([{a:'a'},{b:'b'}]);
+            expect(c.length).toEqual(2);
+        });
     });
 });

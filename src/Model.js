@@ -115,15 +115,18 @@ var Model = Class.create(Base, {
      */
     set: function(keyOrObject, value) {
         var oldValues = {},
-            newValues = {};
-        if (keyOrObject instanceof Object) {
-            $H(keyOrObject).each(function(item) {
-                this.set(item.key, item.value);
-            }, this);
-        } else {
-            this._setAttribute(keyOrObject, value,newValues,oldValues);
-            this.fireEvent('updated',this,newValues,oldValues);
+            newValues = {},
+            obj = {};
+        if (typeof keyOrObject === 'string') {
+            obj[keyOrObject] = value;
+        } else if (typeof keyOrObject === 'object') {
+            obj = keyOrObject;
         }
+
+        $H(obj).each(function(pair) {
+            this._setAttribute(pair.key, pair.value,newValues,oldValues);
+        }.bind(this));
+        this.fireEvent('updated',this,newValues,oldValues);
         return this;
     },
 
@@ -138,7 +141,7 @@ var Model = Class.create(Base, {
     _setAttribute: function(key, value,newVals, oldVals) {
         if (typeof key === 'string') {
             if (this._attributes[key] !== value) {
-                if (oldVals) oldVals[key] = this._dirtyAttributes[key];
+                if (oldVals) oldVals[key] = this._attributes[key];
                 if (newVals) newVals[key] = value;
                 this._dirtyAttributes[key] = value;
             }
