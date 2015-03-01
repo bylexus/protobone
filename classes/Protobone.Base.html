@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>Protobone.Base - protobone</title>
+    <link rel="stylesheet" href="http://yui.yahooapis.com/3.8.0pr2/build/cssgrids/cssgrids-min.css">
+    <link rel="stylesheet" href="../assets/vendor/prettify/prettify-min.css">
+    <link rel="stylesheet" href="../assets/css/main.css" id="site_styles">
+    <script src="http://yui.yahooapis.com/combo?3.8.0pr2/build/yui/yui-min.js"></script>
+</head>
+<body class="yui3-skin-sam">
+
+<div id="doc">
+    <div id="hd" class="yui3-g header">
+        <div class="yui3-u-3-4">
+            <h1><a href="../index.html"><img src="../assets/css/logo.png" width="117" height="52">protobone: Protobone.Base</a></h1>
+        </div>
+        <div class="yui3-u-1-4 version">
+            <em>API Docs for: 0.0.6</em>
+        </div>
+    </div>
+    <div class="yui3-g">
+
+        <div id="sidebar" class="yui3-u">
+            <div id="modules" class="sidebox">
+                <div class="hd">
+                    <h2 class="no-toc">Modules</h2>
+                </div>
+                <div class="bd">
+                    <ul>
+                    </ul>
+                </div>
+            </div>
+            
+            <div id="classes" class="sidebox">
+                <div class="hd">
+                    <h2 class="no-toc">Classes</h2>
+                </div>
+                <div class="bd">
+                    <ul>
+                            <li><a href="../classes/Protobone.Base.html">Protobone.Base</a></li>
+                            <li><a href="../classes/Protobone.Collection.html">Protobone.Collection</a></li>
+                            <li><a href="../classes/Protobone.Model.html">Protobone.Model</a></li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div id="methods-on-page" class="sidebox on-page">
+                <div class="hd">
+                    <h2 class="no-toc">Methods On Page</h2>
+                </div>
+                <div class="bd">
+                    <ul>
+                            <li><a href="#methods_fireEvent">fireEvent</a></li>
+                            <li><a href="#methods_off">off</a></li>
+                            <li><a href="#methods_on">on</a></li>
+                    </ul>
+                </div>
+            </div>
+            
+            
+            
+            
+            <div id="fileTree" class="sidebox">
+                <div class="hd">
+                    <h2 class="no-toc">Files</h2>
+                </div>
+                <div class="bd">
+                    <ul><li>src/<ul><li><a href="../files/src_Base.js.html">Base.js</a></li><li><a href="../files/src_Collection.js.html">Collection.js</a></li><li><a href="../files/src_Model.js.html">Model.js</a></li><li><a href="../files/src_statics.js.html">statics.js</a></li></ul></li></ul>
+                </div>
+            </div>
+            
+        </div>
+
+        <div id="main" class="yui3-u">
+            <div class="content"><h4>Class Protobone.Base</h4>
+<span class="foundat">Class defined in: <a href="../files/src_Base.js.html#l1"><code>src&#x2F;Base.js:1</code></a></span>
+<div class="intro"><p>Base class for Protobone classes. Shared functions which are needed in all classes. This class is not
+meant to be instantiated by itself.</p>
+</div>
+
+    <a name="methods_Protobone.Base"></a>
+    <div class="method item">
+         <strong class="name"><code>Protobone.Base</code></strong>( <code>  </code> ) 
+        <br>
+        <span class="foundat">
+            
+            <a href="../files/src_Base.js.html#l1"><code>src&#x2F;Base.js:1</code></a>
+        </span><br>
+        
+    </div>
+
+<div id="classdocs">
+    <ul>
+        <li><a href="#methods">Methods</a></li>
+    </ul>
+    <div>
+            <div id="methods">
+<a name="methods_fireEvent"></a>
+<div class="method item">
+    <a href="https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/Boolean" class="crosslink external" target="_blank">Boolean</a> <strong class="name"><code>fireEvent</code></strong>( <code>eventName </code> ) 
+    <br>
+    <span class="foundat">
+        
+        <a href="../files/src_Base.js.html#l60"><code>src&#x2F;Base.js:60</code></a>
+    </span><br>
+    <p>Fires an event, informing all listneners that are registered for
+the given event name. The fireEvent function can be called with
+any number of additional arguments, which are then passed to the event
+handler function.</p>
+<p>Returns true if NONE of the registered handlers return false: As soon as
+one listener returns false, fireEvent will also return false.</p>
+
+    <strong>Parameters:</strong>
+    <ul class="params">
+        <li>
+            <code>eventName</code> <strong>&lt;<a href="https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/String" class="crosslink external" target="_blank">String</a>&gt;</strong>
+        <p>The event to fire, e.g. &#39;updated&#39;</p>
+
+        </li>
+    </ul>
+    <br><div class="returns"><strong>Returns:</strong> &lt;<a href="https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/Boolean" class="crosslink external" target="_blank">Boolean</a>&gt; <p>true when non of the listeners returned false, false if they do so.</p>
+</div>
+</div>
+<a name="methods_off"></a>
+<div class="method item">
+     <strong class="name"><code>off</code></strong>( <code>eventName, callback, this </code> ) 
+    <br>
+    <span class="foundat">
+        
+        <a href="../files/src_Base.js.html#l34"><code>src&#x2F;Base.js:34</code></a>
+    </span><br>
+    <p>Removes a specific event handler for an event, or removes
+all listerners from an event.</p>
+
+    <strong>Parameters:</strong>
+    <ul class="params">
+        <li>
+            <code>eventName</code> <strong>&lt;<a href="https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/String" class="crosslink external" target="_blank">String</a>&gt;</strong>
+        <p>E.g. &#39;updated&#39;</p>
+
+        </li>
+        <li>
+            <code>callback</code> <strong>&lt;<a href="https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/Function" class="crosslink external" target="_blank">Function</a>&gt;</strong>
+        <p>The callback to remove. If omitted, all callbacks
+  for a specific event are removed</p>
+
+        </li>
+        <li>
+            <code>this</code> <strong>&lt;<a href="https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/Boolean" class="crosslink external" target="_blank">Boolean</a>&gt;</strong>
+         
+        </li>
+    </ul>
+</div>
+<a name="methods_on"></a>
+<div class="method item">
+     <strong class="name"><code>on</code></strong>( <code>eventName, callback, this </code> ) 
+    <br>
+    <span class="foundat">
+        
+        <a href="../files/src_Base.js.html#l16"><code>src&#x2F;Base.js:16</code></a>
+    </span><br>
+    <p>Registers an event handler.
+It does not check on duplicity, so you can add the same event
+handler multiple times.</p>
+
+    <strong>Parameters:</strong>
+    <ul class="params">
+        <li>
+            <code>eventName</code> <strong>&lt;<a href="https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/String" class="crosslink external" target="_blank">String</a>&gt;</strong>
+        <p>The name of the event, e.g. &#39;updated&#39;</p>
+
+        </li>
+        <li>
+            <code>callback</code> <strong>&lt;<a href="https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/Function" class="crosslink external" target="_blank">Function</a>&gt;</strong>
+        <p>The listener function, called with event-specific {parameters}</p>
+
+        </li>
+        <li>
+            <code>this</code> <strong>&lt;<a href="https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/Boolean" class="crosslink external" target="_blank">Boolean</a>&gt;</strong>
+         
+        </li>
+    </ul>
+</div>
+            </div>
+    </div>
+</div>
+</div>
+        </div>
+    </div>
+</div>
+<script src="../assets/vendor/prettify/prettify-min.js"></script>
+<script>prettyPrint();</script>
+<script src="../assets/js/yui-prettify.js"></script>
+<script src="../assets/js/tabs.js"></script>
+</body>
+</html>
