@@ -2,12 +2,30 @@
     "project": {
         "name": "protobone",
         "description": "Backbone-inspired PrototypeJS addition to provide syncable Models (the 'M' in 'MVC')",
-        "version": "0.0.4",
+        "version": "0.0.6",
         "url": "https://github.com/bylexus/protobone.git"
     },
     "files": {
-        "src/model/Model.js": {
-            "name": "src/model/Model.js",
+        "src/Base.js": {
+            "name": "src/Base.js",
+            "modules": {},
+            "classes": {
+                "Protobone.Base": 1
+            },
+            "fors": {},
+            "namespaces": {}
+        },
+        "src/Collection.js": {
+            "name": "src/Collection.js",
+            "modules": {},
+            "classes": {
+                "Protobone.Collection": 1
+            },
+            "fors": {},
+            "namespaces": {}
+        },
+        "src/Model.js": {
+            "name": "src/Model.js",
             "modules": {},
             "classes": {},
             "fors": {},
@@ -25,6 +43,39 @@
     },
     "modules": {},
     "classes": {
+        "Protobone.Base": {
+            "name": "Protobone.Base",
+            "shortname": "Protobone.Base",
+            "classitems": [],
+            "plugins": [],
+            "extensions": [],
+            "plugin_for": [],
+            "extension_for": [],
+            "file": "src/Base.js",
+            "line": 1,
+            "description": "Base class for Protobone classes. Shared functions which are needed in all classes. This class is not\nmeant to be instantiated by itself.",
+            "author": "Alexander Schenkel <alex@alexi.ch>",
+            "copyright": "2015 Alexander Schenkel",
+            "license": "Released under the MIT License",
+            "is_constructor": 1
+        },
+        "Protobone.Collection": {
+            "name": "Protobone.Collection",
+            "shortname": "Protobone.Collection",
+            "classitems": [],
+            "plugins": [],
+            "extensions": [],
+            "plugin_for": [],
+            "extension_for": [],
+            "file": "src/Collection.js",
+            "line": 1,
+            "description": "PrototypeJS Model extension - Enables Prototype JS users to fetch / store\nModels from / to a backend using AJAX / REST.\nThe Collection class stores Models and allows storing / fetching them in a batch.\n\nInspired by (but not copied) [Backbone's Backbone.Collection](http://backbonejs.org/) and Backbone.sync",
+            "author": "Alexander Schenkel <alex@alexi.ch>",
+            "copyright": "2015 Alexander Schenkel",
+            "license": "Released under the MIT License",
+            "extends": "Protobone.Base",
+            "is_constructor": 1
+        },
         "Protobone.Model": {
             "name": "Protobone.Model",
             "shortname": "Protobone.Model",
@@ -39,6 +90,7 @@
             "author": "Alexander Schenkel <alex@alexi.ch>",
             "copyright": "2015 Alexander Schenkel",
             "license": "Released under the MIT License",
+            "extends": "Protobone.Base",
             "is_constructor": 1,
             "see": [
                 "http://backbonejs.org/\n\nThis is the static sync method (analog Backbone.sync)",
@@ -51,16 +103,347 @@
     },
     "classitems": [
         {
-            "file": "src/model/Model.js",
+            "file": "src/Base.js",
+            "line": 16,
+            "description": "Registers an event handler.\nIt does not check on duplicity, so you can add the same event\nhandler multiple times.",
+            "itemtype": "method",
+            "name": "on",
+            "params": [
+                {
+                    "name": "eventName",
+                    "description": "The name of the event, e.g. 'updated'",
+                    "type": "String"
+                },
+                {
+                    "name": "callback",
+                    "description": "The listener function, called with event-specific {parameters}",
+                    "type": "Function"
+                },
+                {
+                    "name": "this",
+                    "description": "",
+                    "type": "Boolean"
+                }
+            ],
+            "class": "Protobone.Base"
+        },
+        {
+            "file": "src/Base.js",
             "line": 34,
+            "description": "Removes a specific event handler for an event, or removes\nall listerners from an event.",
+            "itemtype": "method",
+            "name": "off",
+            "params": [
+                {
+                    "name": "eventName",
+                    "description": "E.g. 'updated'",
+                    "type": "String"
+                },
+                {
+                    "name": "callback",
+                    "description": "The callback to remove. If omitted, all callbacks\n  for a specific event are removed",
+                    "type": "Function"
+                },
+                {
+                    "name": "this",
+                    "description": "",
+                    "type": "Boolean"
+                }
+            ],
+            "class": "Protobone.Base"
+        },
+        {
+            "file": "src/Base.js",
+            "line": 60,
+            "description": "Fires an event, informing all listneners that are registered for\nthe given event name. The fireEvent function can be called with\nany number of additional arguments, which are then passed to the event\nhandler function.\n\nReturns true if NONE of the registered handlers return false: As soon as\none listener returns false, fireEvent will also return false.",
+            "itemtype": "method",
+            "name": "fireEvent",
+            "params": [
+                {
+                    "name": "eventName",
+                    "description": "The event to fire, e.g. 'updated'",
+                    "type": "String"
+                }
+            ],
+            "return": {
+                "description": "true when non of the listeners returned false, false if they do so.",
+                "type": "Boolean"
+            },
+            "class": "Protobone.Base"
+        },
+        {
+            "file": "src/Collection.js",
+            "line": 20,
+            "description": "The URL root for this Collection. Must be set in child classes,\ne.g. to '/entities/Person', or must be defined in the defined Model.\n\nUsed by the url() function to build the persistence URL.",
+            "itemtype": "property",
+            "name": "urlRoot",
+            "type": "String",
+            "class": "Protobone.Collection"
+        },
+        {
+            "file": "src/Collection.js",
+            "line": 31,
+            "description": "Defines the model class used when adding models via attribute array.",
+            "itemtype": "property",
+            "name": "model",
+            "type": "{Class}",
+            "class": "Protobone.Collection"
+        },
+        {
+            "file": "src/Collection.js",
+            "line": 39,
+            "description": "Constructor. A data array can be delivered to create Models already during\nconstruction time (e.g. `[{name: 'alex'},{name: 'barbara'}]`)",
+            "itemtype": "method",
+            "name": "constructor",
+            "params": [
+                {
+                    "name": "data",
+                    "description": "Initial data (array of key/value pairs) to create Model's from",
+                    "type": "Array"
+                }
+            ],
+            "class": "Protobone.Collection"
+        },
+        {
+            "file": "src/Collection.js",
+            "line": 54,
+            "description": "stores event handler functions which will be attached to\nmodels on add(): We need a reference to them for\nlater removing the event listeners in remove().",
+            "class": "Protobone.Collection"
+        },
+        {
+            "file": "src/Collection.js",
+            "line": 72,
+            "description": "The add method takes a Model or an array of Models and adds them to the\ninternal collection. Plain objects can also be delivered, which will be\ntransformed to Prototype.Model instances or, if set, to models of the `this.model` class.",
+            "itemtype": "method",
+            "name": "add",
+            "params": [
+                {
+                    "name": "{Object}",
+                    "description": "data The array / object of model(s) to be added",
+                    "type": "Array"
+                }
+            ],
+            "class": "Protobone.Collection"
+        },
+        {
+            "file": "src/Collection.js",
+            "line": 102,
+            "description": "Returns the model by specific ID",
+            "itemtype": "method",
+            "name": "get",
+            "params": [
+                {
+                    "name": "id",
+                    "description": "The ID of the model",
+                    "type": "Mixed"
+                }
+            ],
+            "return": {
+                "description": "The model if found, or null",
+                "type": "Model"
+            },
+            "class": "Protobone.Collection"
+        },
+        {
+            "file": "src/Collection.js",
+            "line": 114,
+            "description": "Find a model by a specific attribute value.",
+            "itemtype": "method",
+            "name": "findBy",
+            "params": [
+                {
+                    "name": "attribute",
+                    "description": "The name of the attribute",
+                    "type": "String"
+                },
+                {
+                    "name": "value",
+                    "description": "The value of the attribute",
+                    "type": "Mixed"
+                },
+                {
+                    "name": "Returns",
+                    "description": "the first model with a matching attribute value, or null if none can be found",
+                    "type": "Model"
+                }
+            ],
+            "class": "Protobone.Collection"
+        },
+        {
+            "file": "src/Collection.js",
+            "line": 128,
+            "description": "Like where,",
+            "itemtype": "method",
+            "name": "findWhere",
+            "params": [
+                {
+                    "name": "predicateProps",
+                    "description": "A key/value hash with attributes/values to match",
+                    "type": "Object"
+                }
+            ],
+            "return": {
+                "description": "The first matching model",
+                "type": "Model"
+            },
+            "class": "Protobone.Collection"
+        },
+        {
+            "file": "src/Collection.js",
+            "line": 145,
+            "description": "Helper method for matching a single model against a set of\npredicate properties (all must match).\nReturns true if all predicate props match, false if not.",
+            "class": "Protobone.Collection"
+        },
+        {
+            "file": "src/Collection.js",
+            "line": 158,
+            "description": "alias for add(), to support \"array like\" behaviour",
+            "itemtype": "method",
+            "name": "push",
+            "params": [
+                {
+                    "name": "Same",
+                    "description": "as add, data The array / object of model(s) to be added",
+                    "type": "Object"
+                }
+            ],
+            "class": "Protobone.Collection"
+        },
+        {
+            "file": "src/Collection.js",
+            "line": 169,
+            "description": "returns the model at the given index, or null if index is out of bounds",
+            "itemtype": "method",
+            "name": "at",
+            "params": [
+                {
+                    "name": "index",
+                    "description": "The index to fetch the model for",
+                    "type": "Integer"
+                }
+            ],
+            "return": {
+                "description": "The model at the index or null",
+                "type": "Model"
+            },
+            "class": "Protobone.Collection"
+        },
+        {
+            "file": "src/Collection.js",
+            "line": 181,
+            "description": "returns the index of the given model, or -1 if the model is not in the collection.",
+            "itemtype": "method",
+            "name": "indexOf",
+            "params": [
+                {
+                    "name": "model",
+                    "description": "The model to find",
+                    "type": "Model"
+                }
+            ],
+            "return": {
+                "description": "The index, or -1 if not in collection",
+                "type": "Integer"
+            },
+            "class": "Protobone.Collection"
+        },
+        {
+            "file": "src/Collection.js",
+            "line": 192,
+            "description": "loops over all models and calls the given callback with `callback(model,index)`.\nReturn false within the callback to cancel the loop.",
+            "itemtype": "method",
+            "name": "forEach",
+            "params": [
+                {
+                    "name": "callback",
+                    "description": "The callback for every item to be called. Return false to cancel the loop",
+                    "type": "Function"
+                }
+            ],
+            "class": "Protobone.Collection"
+        },
+        {
+            "file": "src/Collection.js",
+            "line": 208,
+            "description": "Simple application of `filter()` function: returns all models matching\nthe given attributes, e.g.:\n```javascript```\nvar c = new Protobone.Collection([\n    {author: 'Stephen King', title: 'Carrie'},\n    {author: 'Stephen King', title: 'Needful Things'},\n    {author: 'Jane Austen', title: 'Persuasion'},\n]);\nvar res = c.where({author: 'Stephen King'});\n// => returns all Models with Stephen King as author\n```\n\nMultiple attributes are allowed.",
+            "itemtype": "method",
+            "name": "where",
+            "see": [
+                "filter"
+            ],
+            "params": [
+                {
+                    "name": "predicateProps",
+                    "description": "A key/value hash with attributes/values to match",
+                    "type": "Object"
+                }
+            ],
+            "return": {
+                "description": "The matching models",
+                "type": "Array"
+            },
+            "class": "Protobone.Collection"
+        },
+        {
+            "file": "src/Collection.js",
+            "line": 234,
+            "description": "Returns all models matching a given predicate function. The predicate function\ngets the actual model, and must return `true` if it matches, or `false` if not.\nExample:\n```javascript```\nvar c = new Protobone.Collection([\n    {author: 'Stephen King', title: 'Carrie'},\n    {author: 'Stephen King', title: 'Needful Things'},\n    {author: 'Jane Austen', title: 'Persuasion'},\n]);\nvar res = c.filter(function(item){\n    return item.get('author') === 'Stephen King';\n});\n// => returns all Models with Stephen King as author\n```",
+            "itemtype": "method",
+            "name": "filter",
+            "params": [
+                {
+                    "name": "predicate",
+                    "description": "The predicate function as test for each model",
+                    "type": "Function"
+                }
+            ],
+            "return": {
+                "description": "The matching models",
+                "type": "Array"
+            },
+            "class": "Protobone.Collection"
+        },
+        {
+            "file": "src/Collection.js",
+            "line": 264,
+            "description": "Removes the given model(s) (single model or array of models) from the collection.\nfires a remove event. If the model occurs multiple times, all of them are removed.",
+            "itemtype": "method",
+            "name": "remove",
+            "params": [
+                {
+                    "name": "The",
+                    "description": "model(s) to be removed",
+                    "type": "Model/Array"
+                }
+            ],
+            "class": "Protobone.Collection"
+        },
+        {
+            "file": "src/Collection.js",
+            "line": 291,
+            "description": "Removes the model at the index given.",
+            "itemtype": "method",
+            "name": "remove",
+            "params": [
+                {
+                    "name": "The",
+                    "description": "index of the model to be removed",
+                    "type": "Integer"
+                }
+            ],
+            "class": "Protobone.Collection"
+        },
+        {
+            "file": "src/Model.js",
+            "line": 36,
             "description": "Defines the name of the ID attribute. Defaults to `id`.",
             "itemtype": "property",
             "name": "id",
             "class": "Protobone.Model"
         },
         {
-            "file": "src/model/Model.js",
-            "line": 41,
+            "file": "src/Model.js",
+            "line": 43,
             "description": "The URL root for this Model. Must be set in child classes,\ne.g. to '/entities/Person'.\nUsed by the url() function to build the persistence URL.",
             "itemtype": "property",
             "name": "urlRoot",
@@ -68,16 +451,16 @@
             "class": "Protobone.Model"
         },
         {
-            "file": "src/model/Model.js",
-            "line": 51,
+            "file": "src/Model.js",
+            "line": 53,
             "description": "Used by the parse() function, it defines the root property\nin the server's json response which contains the\npayload data for the model. Defaults to null (delivered json\ndirectly contains model attributes)",
             "itemtype": "property",
             "name": "rootProperty",
             "class": "Protobone.Model"
         },
         {
-            "file": "src/model/Model.js",
-            "line": 61,
+            "file": "src/Model.js",
+            "line": 63,
             "description": "Constructor. Sets the given data (key/value pairs)\nas attributes on new model instances.",
             "itemtype": "method",
             "name": "constructor",
@@ -91,13 +474,13 @@
             "class": "Protobone.Model"
         },
         {
-            "file": "src/model/Model.js",
-            "line": 73,
+            "file": "src/Model.js",
+            "line": 75,
             "class": "Protobone.Model"
         },
         {
-            "file": "src/model/Model.js",
-            "line": 79,
+            "file": "src/Model.js",
+            "line": 81,
             "description": "Returns the instance's ID of the model. Null means it is a new, not saved\ninstance.",
             "itemtype": "method",
             "name": "getId",
@@ -108,8 +491,8 @@
             "class": "Protobone.Model"
         },
         {
-            "file": "src/model/Model.js",
-            "line": 90,
+            "file": "src/Model.js",
+            "line": 92,
             "description": "Sets the Model instance's ID. It also sets it as attribute\nvalue so that it is sent to the server when synced.",
             "itemtype": "method",
             "name": "setId",
@@ -127,8 +510,8 @@
             "class": "Protobone.Model"
         },
         {
-            "file": "src/model/Model.js",
-            "line": 104,
+            "file": "src/Model.js",
+            "line": 106,
             "description": "Sets Model attributes (key/values). Takes either a key and a value,\nor a plain object containing key/value pairs.",
             "itemtype": "method",
             "name": "set",
@@ -151,8 +534,8 @@
             "class": "Protobone.Model"
         },
         {
-            "file": "src/model/Model.js",
-            "line": 128,
+            "file": "src/Model.js",
+            "line": 133,
             "description": "Sets a single Model attribute (e.g. 'name' to 'Alex'). Internal helper function.\nPlease use set() instead.",
             "params": [
                 {
@@ -173,8 +556,8 @@
             "class": "Protobone.Model"
         },
         {
-            "file": "src/model/Model.js",
-            "line": 152,
+            "file": "src/Model.js",
+            "line": 157,
             "description": "Returns a specific attribute, or all if key is omitted",
             "itemtype": "method",
             "name": "get",
@@ -192,8 +575,8 @@
             "class": "Protobone.Model"
         },
         {
-            "file": "src/model/Model.js",
-            "line": 171,
+            "file": "src/Model.js",
+            "line": 176,
             "description": "Creates the REST url for the actual state of the Model. Override this\nmethod if you want to implement your own URL scheme. Here is how it works\nby default:\n\n- non-persistent state (id = null): return '<urlRoot>'\n- persistent state (id <> null): return '<urlRoot>/<id>'",
             "itemtype": "method",
             "name": "url",
@@ -204,8 +587,8 @@
             "class": "Protobone.Model"
         },
         {
-            "file": "src/model/Model.js",
-            "line": 192,
+            "file": "src/Model.js",
+            "line": 197,
             "description": "Makes this model persistent by sending the data to a REST interface (by default).\nMake sure to set the urlRool property on class definition.\n\noptions are all options that Prototype's Ajax.Request understands, so you\ncan e.g. deliver a onSuccess callback:\n\n```javascript\nmyModel.save({onSuccess: function(response,model){\n    // do something after save here\n}});\n```",
             "itemtype": "method",
             "name": "save",
@@ -219,8 +602,8 @@
             "class": "Protobone.Model"
         },
         {
-            "file": "src/model/Model.js",
-            "line": 215,
+            "file": "src/Model.js",
+            "line": 220,
             "description": "Fetches this Model's representation from the server. Only\nallowed for existing (id <> null) models. options is passed\nalong to Prototype's Ajax.Request function.",
             "itemtype": "method",
             "name": "fetch",
@@ -234,8 +617,8 @@
             "class": "Protobone.Model"
         },
         {
-            "file": "src/model/Model.js",
-            "line": 232,
+            "file": "src/Model.js",
+            "line": 237,
             "description": "invokes a delete request to the server.  Only\nallowed for existing (id <> null) models. options is passed\nalong to Prototype's Ajax.Request function.\n\nAfter the deletion was successful, the model instance is updated with the\nserver data, even if the server removed the instance.",
             "itemtype": "method",
             "name": "destroy",
@@ -249,14 +632,14 @@
             "class": "Protobone.Model"
         },
         {
-            "file": "src/model/Model.js",
-            "line": 252,
+            "file": "src/Model.js",
+            "line": 257,
             "description": "internal helper function for initiating the requests for save, fetch, destroy",
             "class": "Protobone.Model"
         },
         {
-            "file": "src/model/Model.js",
-            "line": 273,
+            "file": "src/Model.js",
+            "line": 278,
             "description": "Just calls Protobone.Model.sync. If you want your own, Model-specific implementation,\noverride this function.",
             "see": [
                 "Protobone.Model.sync. Also here: inspired by http://backbonejs.org/#Sync"
@@ -266,16 +649,16 @@
             "class": "Protobone.Model"
         },
         {
-            "file": "src/model/Model.js",
-            "line": 284,
+            "file": "src/Model.js",
+            "line": 289,
             "description": "Called by save() and fetch() with the server's data response. Fills in the\nserver response to the model. In the default implementation, it just\ntakes the plain JSON object from the server (if any) and store the values on the model.\nif `rootProperty`is set, the data entry point is set to the rootProperty data.",
             "itemtype": "method",
             "name": "parse",
             "class": "Protobone.Model"
         },
         {
-            "file": "src/model/Model.js",
-            "line": 302,
+            "file": "src/Model.js",
+            "line": 307,
             "description": "Checks if the model has a certain attribute.",
             "itemtype": "method",
             "name": "hasAttribute",
@@ -288,75 +671,6 @@
             ],
             "return": {
                 "description": "",
-                "type": "Boolean"
-            },
-            "class": "Protobone.Model"
-        },
-        {
-            "file": "src/model/Model.js",
-            "line": 313,
-            "description": "Registers an event handler.\nIt does not check on duplicity, so you can add the same event\nhandler multiple times.",
-            "itemtype": "method",
-            "name": "on",
-            "params": [
-                {
-                    "name": "eventName",
-                    "description": "The name of the event, e.g. 'updated'",
-                    "type": "String"
-                },
-                {
-                    "name": "callback",
-                    "description": "The listener function, called with event-specific {parameters}",
-                    "type": "Function"
-                },
-                {
-                    "name": "this",
-                    "description": "",
-                    "type": "Boolean"
-                }
-            ],
-            "class": "Protobone.Model"
-        },
-        {
-            "file": "src/model/Model.js",
-            "line": 331,
-            "description": "Removes a specific event handler for an event, or removes\nall listerners from an event.",
-            "itemtype": "method",
-            "name": "off",
-            "params": [
-                {
-                    "name": "eventName",
-                    "description": "E.g. 'updated'",
-                    "type": "String"
-                },
-                {
-                    "name": "callback",
-                    "description": "The callback to remove. If omitted, all callbacks\n  for a specific event are removed",
-                    "type": "Function"
-                },
-                {
-                    "name": "this",
-                    "description": "",
-                    "type": "Boolean"
-                }
-            ],
-            "class": "Protobone.Model"
-        },
-        {
-            "file": "src/model/Model.js",
-            "line": 357,
-            "description": "Fires an event, informing all listneners that are registered for\nthe given event name. The fireEvent function can be called with\nany number of additional arguments, which are then passed to the event\nhandler function.\n\nReturns true if NONE of the registered handlers return false: As soon as\none listener returns false, fireEvent will also return false.",
-            "itemtype": "method",
-            "name": "fireEvent",
-            "params": [
-                {
-                    "name": "eventName",
-                    "description": "The event to fire, e.g. 'updated'",
-                    "type": "String"
-                }
-            ],
-            "return": {
-                "description": "true when non of the listeners returned false, false if they do so.",
                 "type": "Boolean"
             },
             "class": "Protobone.Model"
@@ -414,11 +728,35 @@
     "warnings": [
         {
             "message": "unknown tag: copyright",
-            "line": " src/model/Model.js:1"
+            "line": " src/Base.js:1"
         },
         {
             "message": "unknown tag: license",
-            "line": " src/model/Model.js:1"
+            "line": " src/Base.js:1"
+        },
+        {
+            "message": "unknown tag: copyright",
+            "line": " src/Collection.js:1"
+        },
+        {
+            "message": "unknown tag: license",
+            "line": " src/Collection.js:1"
+        },
+        {
+            "message": "replacing incorrect tag: params with param",
+            "line": " src/Collection.js:158"
+        },
+        {
+            "message": "param name/type/descript missing",
+            "line": " src/Collection.js:192"
+        },
+        {
+            "message": "unknown tag: copyright",
+            "line": " src/Model.js:1"
+        },
+        {
+            "message": "unknown tag: license",
+            "line": " src/Model.js:1"
         },
         {
             "message": "unknown tag: copyright",
@@ -429,16 +767,24 @@
             "line": " src/statics.js:1"
         },
         {
+            "message": "Missing item type\nstores event handler functions which will be attached to\nmodels on add(): We need a reference to them for\nlater removing the event listeners in remove().",
+            "line": " src/Collection.js:54"
+        },
+        {
+            "message": "Missing item type\nHelper method for matching a single model against a set of\npredicate properties (all must match).\nReturns true if all predicate props match, false if not.",
+            "line": " src/Collection.js:145"
+        },
+        {
             "message": "Missing item type",
-            "line": " src/model/Model.js:73"
+            "line": " src/Model.js:75"
         },
         {
             "message": "Missing item type\nSets a single Model attribute (e.g. 'name' to 'Alex'). Internal helper function.\nPlease use set() instead.",
-            "line": " src/model/Model.js:128"
+            "line": " src/Model.js:133"
         },
         {
             "message": "Missing item type\ninternal helper function for initiating the requests for save, fetch, destroy",
-            "line": " src/model/Model.js:252"
+            "line": " src/Model.js:257"
         }
     ]
 }
