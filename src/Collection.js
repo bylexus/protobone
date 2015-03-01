@@ -115,12 +115,27 @@ var Collection = Class.create(Base, {
         return found;
     },
 
+    /**
+     * alias for add(), to support "array like" behaviour
+     *
+     * @method push
+     * @params {Object} Same as add, data The array / object of model(s) to be added
+     */
     push: function(model) {
-
+        return this.add(model);
     },
 
-    at: function(id) {
 
+    /**
+     * returns the model at the given index, or null if index is out of bounds
+     *
+     * @method at
+     * @param {Integer} index The index to fetch the model for
+     * @return {Model} The model at the index or null
+     */
+    at: function(index) {
+        if (index < 0 || index > this.length-1) return null;
+        return this.models[index];
     },
 
     /**
