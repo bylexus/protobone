@@ -52,10 +52,21 @@
                 <div class="bd">
                     <ul>
                             <li><a href="#methods_add">add</a></li>
+                            <li><a href="#methods_at">at</a></li>
                             <li><a href="#methods_constructor">constructor</a></li>
+                            <li><a href="#methods_filter">filter</a></li>
+                            <li><a href="#methods_findBy">findBy</a></li>
+                            <li><a href="#methods_findWhere">findWhere</a></li>
                             <li><a href="#methods_fireEvent">fireEvent</a></li>
+                            <li><a href="#methods_forEach">forEach</a></li>
+                            <li><a href="#methods_get">get</a></li>
+                            <li><a href="#methods_indexOf">indexOf</a></li>
                             <li><a href="#methods_off">off</a></li>
                             <li><a href="#methods_on">on</a></li>
+                            <li><a href="#methods_push">push</a></li>
+                            <li><a href="#methods_remove">remove</a></li>
+                            <li><a href="#methods_remove">remove</a></li>
+                            <li><a href="#methods_where">where</a></li>
                     </ul>
                 </div>
             </div>
@@ -108,7 +119,7 @@ The Collection class stores Models and allows storing / fetching them in a batch
     <br>
     <span class="foundat">
         
-        <a href="../files/src_Collection.js.html#l51"><code>src&#x2F;Collection.js:51</code></a>
+        <a href="../files/src_Collection.js.html#l72"><code>src&#x2F;Collection.js:72</code></a>
     </span><br>
     <p>The add method takes a Model or an array of Models and adds them to the
 internal collection. Plain objects can also be delivered, which will be
@@ -123,13 +134,34 @@ transformed to Prototype.Model instances or, if set, to models of the <code>this
         </li>
     </ul>
 </div>
+<a name="methods_at"></a>
+<div class="method item">
+    Model <strong class="name"><code>at</code></strong>( <code>index </code> ) 
+    <br>
+    <span class="foundat">
+        
+        <a href="../files/src_Collection.js.html#l169"><code>src&#x2F;Collection.js:169</code></a>
+    </span><br>
+    <p>returns the model at the given index, or null if index is out of bounds</p>
+
+    <strong>Parameters:</strong>
+    <ul class="params">
+        <li>
+            <code>index</code> <strong>&lt;Integer&gt;</strong>
+        <p>The index to fetch the model for</p>
+
+        </li>
+    </ul>
+    <br><div class="returns"><strong>Returns:</strong> &lt;Model&gt; <p>The model at the index or null</p>
+</div>
+</div>
 <a name="methods_constructor"></a>
 <div class="method item">
      <strong class="name"><code>constructor</code></strong>( <code>data </code> ) 
     <br>
     <span class="foundat">
         
-        <a href="../files/src_Collection.js.html#l33"><code>src&#x2F;Collection.js:33</code></a>
+        <a href="../files/src_Collection.js.html#l39"><code>src&#x2F;Collection.js:39</code></a>
     </span><br>
     <p>Constructor. A data array can be delivered to create Models already during
 construction time (e.g. <code>[{name: &#39;alex&#39;},{name: &#39;barbara&#39;}]</code>)</p>
@@ -142,6 +174,89 @@ construction time (e.g. <code>[{name: &#39;alex&#39;},{name: &#39;barbara&#39;}]
 
         </li>
     </ul>
+</div>
+<a name="methods_filter"></a>
+<div class="method item">
+    <a href="https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/Array" class="crosslink external" target="_blank">Array</a> <strong class="name"><code>filter</code></strong>( <code>predicate </code> ) 
+    <br>
+    <span class="foundat">
+        
+        <a href="../files/src_Collection.js.html#l234"><code>src&#x2F;Collection.js:234</code></a>
+    </span><br>
+    <p>Returns all models matching a given predicate function. The predicate function
+gets the actual model, and must return <code>true</code> if it matches, or <code>false</code> if not.
+Example:</p>
+<pre class="code prettyprint"><code class="lang-javascript<code>&#x60;</code>">var c = new Protobone.Collection([
+    {author: &#39;Stephen King&#39;, title: &#39;Carrie&#39;},
+    {author: &#39;Stephen King&#39;, title: &#39;Needful Things&#39;},
+    {author: &#39;Jane Austen&#39;, title: &#39;Persuasion&#39;},
+]);
+var res = c.filter(function(item){
+    return item.get(&#39;author&#39;) === &#39;Stephen King&#39;;
+});
+// =&gt; returns all Models with Stephen King as author
+</code></pre>
+
+    <strong>Parameters:</strong>
+    <ul class="params">
+        <li>
+            <code>predicate</code> <strong>&lt;<a href="https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/Function" class="crosslink external" target="_blank">Function</a>&gt;</strong>
+        <p>The predicate function as test for each model</p>
+
+        </li>
+    </ul>
+    <br><div class="returns"><strong>Returns:</strong> &lt;<a href="https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/Array" class="crosslink external" target="_blank">Array</a>&gt; <p>The matching models</p>
+</div>
+</div>
+<a name="methods_findBy"></a>
+<div class="method item">
+     <strong class="name"><code>findBy</code></strong>( <code>attribute, value, Returns </code> ) 
+    <br>
+    <span class="foundat">
+        
+        <a href="../files/src_Collection.js.html#l114"><code>src&#x2F;Collection.js:114</code></a>
+    </span><br>
+    <p>Find a model by a specific attribute value.</p>
+
+    <strong>Parameters:</strong>
+    <ul class="params">
+        <li>
+            <code>attribute</code> <strong>&lt;<a href="https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/String" class="crosslink external" target="_blank">String</a>&gt;</strong>
+        <p>The name of the attribute</p>
+
+        </li>
+        <li>
+            <code>value</code> <strong>&lt;Mixed&gt;</strong>
+        <p>The value of the attribute</p>
+
+        </li>
+        <li>
+            <code>Returns</code> <strong>&lt;Model&gt;</strong>
+        <p>the first model with a matching attribute value, or null if none can be found</p>
+
+        </li>
+    </ul>
+</div>
+<a name="methods_findWhere"></a>
+<div class="method item">
+    Model <strong class="name"><code>findWhere</code></strong>( <code>predicateProps </code> ) 
+    <br>
+    <span class="foundat">
+        
+        <a href="../files/src_Collection.js.html#l128"><code>src&#x2F;Collection.js:128</code></a>
+    </span><br>
+    <p>Like where,</p>
+
+    <strong>Parameters:</strong>
+    <ul class="params">
+        <li>
+            <code>predicateProps</code> <strong>&lt;<a href="https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/Object" class="crosslink external" target="_blank">Object</a>&gt;</strong>
+        <p>A key/value hash with attributes/values to match</p>
+
+        </li>
+    </ul>
+    <br><div class="returns"><strong>Returns:</strong> &lt;Model&gt; <p>The first matching model</p>
+</div>
 </div>
 <a name="methods_fireEvent"></a>
 <div class="method item">
@@ -167,6 +282,68 @@ one listener returns false, fireEvent will also return false.</p>
         </li>
     </ul>
     <br><div class="returns"><strong>Returns:</strong> &lt;<a href="https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/Boolean" class="crosslink external" target="_blank">Boolean</a>&gt; <p>true when non of the listeners returned false, false if they do so.</p>
+</div>
+</div>
+<a name="methods_forEach"></a>
+<div class="method item">
+     <strong class="name"><code>forEach</code></strong>( <code>callback </code> ) 
+    <br>
+    <span class="foundat">
+        
+        <a href="../files/src_Collection.js.html#l192"><code>src&#x2F;Collection.js:192</code></a>
+    </span><br>
+    <p>loops over all models and calls the given callback with <code>callback(model,index)</code>.
+Return false within the callback to cancel the loop.</p>
+
+    <strong>Parameters:</strong>
+    <ul class="params">
+        <li>
+            <code>callback</code> <strong>&lt;<a href="https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/Function" class="crosslink external" target="_blank">Function</a>&gt;</strong>
+        <p>The callback for every item to be called. Return false to cancel the loop</p>
+
+        </li>
+    </ul>
+</div>
+<a name="methods_get"></a>
+<div class="method item">
+    Model <strong class="name"><code>get</code></strong>( <code>id </code> ) 
+    <br>
+    <span class="foundat">
+        
+        <a href="../files/src_Collection.js.html#l102"><code>src&#x2F;Collection.js:102</code></a>
+    </span><br>
+    <p>Returns the model by specific ID</p>
+
+    <strong>Parameters:</strong>
+    <ul class="params">
+        <li>
+            <code>id</code> <strong>&lt;Mixed&gt;</strong>
+        <p>The ID of the model</p>
+
+        </li>
+    </ul>
+    <br><div class="returns"><strong>Returns:</strong> &lt;Model&gt; <p>The model if found, or null</p>
+</div>
+</div>
+<a name="methods_indexOf"></a>
+<div class="method item">
+    Integer <strong class="name"><code>indexOf</code></strong>( <code>model </code> ) 
+    <br>
+    <span class="foundat">
+        
+        <a href="../files/src_Collection.js.html#l181"><code>src&#x2F;Collection.js:181</code></a>
+    </span><br>
+    <p>returns the index of the given model, or -1 if the model is not in the collection.</p>
+
+    <strong>Parameters:</strong>
+    <ul class="params">
+        <li>
+            <code>model</code> <strong>&lt;Model&gt;</strong>
+        <p>The model to find</p>
+
+        </li>
+    </ul>
+    <br><div class="returns"><strong>Returns:</strong> &lt;Integer&gt; <p>The index, or -1 if not in collection</p>
 </div>
 </div>
 <a name="methods_off"></a>
@@ -229,8 +406,104 @@ handler multiple times.</p>
         </li>
     </ul>
 </div>
+<a name="methods_push"></a>
+<div class="method item">
+     <strong class="name"><code>push</code></strong>( <code>Same </code> ) 
+    <br>
+    <span class="foundat">
+        
+        <a href="../files/src_Collection.js.html#l158"><code>src&#x2F;Collection.js:158</code></a>
+    </span><br>
+    <p>alias for add(), to support &quot;array like&quot; behaviour</p>
+
+    <strong>Parameters:</strong>
+    <ul class="params">
+        <li>
+            <code>Same</code> <strong>&lt;<a href="https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/Object" class="crosslink external" target="_blank">Object</a>&gt;</strong>
+        <p>as add, data The array / object of model(s) to be added</p>
+
+        </li>
+    </ul>
+</div>
+<a name="methods_remove"></a>
+<div class="method item">
+     <strong class="name"><code>remove</code></strong>( <code>The </code> ) 
+    <br>
+    <span class="foundat">
+        
+        <a href="../files/src_Collection.js.html#l264"><code>src&#x2F;Collection.js:264</code></a>
+    </span><br>
+    <p>Removes the given model(s) (single model or array of models) from the collection.
+fires a remove event. If the model occurs multiple times, all of them are removed.</p>
+
+    <strong>Parameters:</strong>
+    <ul class="params">
+        <li>
+            <code>The</code> <strong>&lt;Model/Array&gt;</strong>
+        <p>model(s) to be removed</p>
+
+        </li>
+    </ul>
+</div>
+<a name="methods_remove"></a>
+<div class="method item">
+     <strong class="name"><code>remove</code></strong>( <code>The </code> ) 
+    <br>
+    <span class="foundat">
+        
+        <a href="../files/src_Collection.js.html#l291"><code>src&#x2F;Collection.js:291</code></a>
+    </span><br>
+    <p>Removes the model at the index given.</p>
+
+    <strong>Parameters:</strong>
+    <ul class="params">
+        <li>
+            <code>The</code> <strong>&lt;Integer&gt;</strong>
+        <p>index of the model to be removed</p>
+
+        </li>
+    </ul>
+</div>
+<a name="methods_where"></a>
+<div class="method item">
+    <a href="https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/Array" class="crosslink external" target="_blank">Array</a> <strong class="name"><code>where</code></strong>( <code>predicateProps </code> ) 
+    <br>
+    <span class="foundat">
+        
+        <a href="../files/src_Collection.js.html#l208"><code>src&#x2F;Collection.js:208</code></a>
+    </span><br>
+    <p>Simple application of <code>filter()</code> function: returns all models matching
+the given attributes, e.g.:</p>
+<pre class="code prettyprint"><code class="lang-javascript<code>&#x60;</code>">var c = new Protobone.Collection([
+    {author: &#39;Stephen King&#39;, title: &#39;Carrie&#39;},
+    {author: &#39;Stephen King&#39;, title: &#39;Needful Things&#39;},
+    {author: &#39;Jane Austen&#39;, title: &#39;Persuasion&#39;},
+]);
+var res = c.where({author: &#39;Stephen King&#39;});
+// =&gt; returns all Models with Stephen King as author
+</code></pre>
+<p>Multiple attributes are allowed.</p>
+
+    <strong>Parameters:</strong>
+    <ul class="params">
+        <li>
+            <code>predicateProps</code> <strong>&lt;<a href="https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/Object" class="crosslink external" target="_blank">Object</a>&gt;</strong>
+        <p>A key/value hash with attributes/values to match</p>
+
+        </li>
+    </ul>
+    <br><div class="returns"><strong>Returns:</strong> &lt;<a href="https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/Array" class="crosslink external" target="_blank">Array</a>&gt; <p>The matching models</p>
+</div>
+</div>
             </div>
             <div id="props">
+                <a name="props_model"></a>
+                <div class="props item">
+                    <code>model</code> &lt;<strong>Class</strong>&gt;<br>
+                    <span class="foundat"><a href="../files/src_Collection.js.html#l31"><code>src&#x2F;Collection.js:31</code></a></span>
+                    <p>Defines the model class used when adding models via attribute array.</p>
+                
+                </div>
                 <a name="props_urlRoot"></a>
                 <div class="props item">
                     <code>urlRoot</code> &lt;<strong><a href="https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/String" class="crosslink external" target="_blank">String</a></strong>&gt;<br>
